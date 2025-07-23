@@ -1,4 +1,4 @@
-Hi, I'm Rwitesh Bera. I’m a software engineer based in India.  I was born and brought up in a village. Back then, we had an old Windows PC at home, and I used to spend hours playing retro games on it. That’s what made me fall in love with computers- and that fascination has only grown over the years.
+Hi, I'm Rwitesh Bera. I’m a software engineer based in India.   Back when I was in school, we had an old Windows PC at home, and I used to spend hours playing retro games on it. That’s what made me fall in love with computers and that fascination has only grown over the years.
 
 ### A bit about my journey...
 
