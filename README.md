@@ -1,8 +1,8 @@
 Hi, I'm Rwitesh Bera 👋
 
-A software engineer based in India, deeply fascinated by software systems, architectures, and backend engineering.
+A software engineer based in India, deeply fascinated by backend engineering, databases, and software architectures.
 
-I work in the Observability space, building systems that help teams monitor their infrastructure. My day-to-day involves tools like OpenTelemetry, Prometheus, Grafana, and ClickHouse, Golang, Docker, and more.
+I work in the Observability space, building systems that help teams monitor their infrastructure. My day-to-day involves tools like OpenTelemetry, Prometheus, Grafana, ClickHouse, Golang, Docker, and more.
 
 🔨 Currently building **[DataCia](https://www.datacia.app/)** — a database GUI.
 
