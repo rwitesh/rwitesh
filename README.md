@@ -10,6 +10,4 @@ Projects:
 
 * Built [DataCia](https://www.datacia.app/), an AI-assisted database GUI.
 
-This GitHub is my personal space to showcase projects, experiments, and things I'm actively exploring.
-
 Feel free to reach out to me on [X](https://x.com/rwiteshbera) or drop a mail at [rwiteshbera@gmail.com](mailto:rwiteshbera@gmail.com).
