@@ -3,7 +3,7 @@ export const SITE = {
   description:
     'Software Engineer building scalable systems, distributed infrastructure, backend services, databases, observability, and AI tooling.',
   author: 'Rwitesh Bera',
-  url: 'https://rwitesh.dev',
+  url: 'https://rwitesh.com',
   email: 'rwiteshbera@gmail.com',
   social: {
     github: 'https://github.com/rwitesh',
