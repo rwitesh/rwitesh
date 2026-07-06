@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rwitesh.dev/sitemap-index.xml
+Sitemap: https://rwitesh.com/sitemap-index.xml

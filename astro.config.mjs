@@ -5,7 +5,7 @@ import { remarkReadingTime } from './src/lib/reading-time.ts';
 import { rehypeExternalLinks } from './src/lib/external-links.ts';
 
 export default defineConfig({
-  site: 'https://rwitesh.dev',
+  site: 'https://rwitesh.com',
   integrations: [sitemap()],
   markdown: {
     processor: unified({
