@@ -1,0 +1,101 @@
+---
+import { SITE } from '../config/site.ts';
+import SocialIcon from './SocialIcon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-links">
+      {SITE.nav.map((item) => (
+        <a href={item.href} class={isActive(item.href) ? 'active' : ''} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+      ))}
+    </div>
+    <div class="nav-actions">
+      <SocialIcon href={SITE.social.github} label="GitHub" />
+      <SocialIcon href={SITE.social.x} label="X" />
+      <SocialIcon href={SITE.social.linkedin} label="LinkedIn" />
+      <span class="divider" aria-hidden="true"></span>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
+
+<style>
+.site-header {
+  padding: var(--space-xs) 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  backdrop-filter: blur(8px);
+}
+
+.nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  font-size: var(--text-size-sm);
+  height: 2.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.nav-links a {
+  color: var(--text-soft);
+  border-bottom: 1px solid transparent;
+  padding: 0.15rem 0;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  border-bottom-color: var(--link);
+}
+
+.nav-links a.active {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 0.15rem;
+}
+
+@media (max-width: 30rem) {
+  .nav {
+    padding: 0 var(--space-xs);
+    gap: var(--space-xs);
+    height: 2.2rem;
+  }
+  .nav-links {
+    gap: var(--space-xs);
+    flex-wrap: nowrap;
+  }
+  .divider {
+    margin: 0 0.05rem;
+  }
+  .nav-actions {
+    gap: 0.15rem;
+  }
+}
+</style>

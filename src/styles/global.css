@@ -1,0 +1,223 @@
+:root {
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --max-width: 720px;
+  --content-padding: 1.5rem;
+
+  --text-size: 0.9375rem;
+  --text-size-sm: 0.8125rem;
+  --text-size-lg: 1.0625rem;
+  --text-size-h1: 1.75rem;
+  --text-size-h2: 1.3125rem;
+  --text-size-h3: 1.09375rem;
+
+  --line-height: 1.7;
+  --heading-line-height: 1.3;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 5rem;
+}
+
+:root,
+:root[data-theme="light"] {
+  --bg: #fbfbfa;
+  --bg-code: #f3f4f5;
+  --text: #2a2a2a;
+  --text-soft: #505050;
+  --text-faint: #888888;
+  --border: #d5d5d5;
+  --border-soft: #e8e8e8;
+  --accent: #00567e;
+  --link: #00567e;
+  --link-hover: #003d5a;
+  --tag-bg: #eaeaea;
+  --tag-text: #555555;
+  --blockquote-text: #606060;
+  --table-header-bg: #f0f0f0;
+  --selection-bg: #00567e1a;
+  --profile-border: #c8c8c8;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0d0d0d;
+  --bg-code: #1a1a1a;
+  --text: #d4d4d4;
+  --text-soft: #9a9a9a;
+  --text-faint: #6f6f6f;
+  --border: #282828;
+  --border-soft: #1e1e1e;
+  --accent: #6cb6ff;
+  --link: #6cb6ff;
+  --link-hover: #9bd1ff;
+  --tag-bg: #1e1e1e;
+  --tag-text: #9a9a9a;
+  --blockquote-text: #8a8a8a;
+  --table-header-bg: #1a1a1a;
+  --selection-bg: #6cb6ff22;
+  --profile-border: #333333;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-mono);
+  font-size: var(--text-size);
+  line-height: var(--line-height);
+  color: var(--text);
+  background: var(--bg);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+::selection {
+  background: var(--selection-bg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--heading-line-height);
+  font-weight: 600;
+  color: var(--text);
+}
+
+h1 { font-size: var(--text-size-h1); }
+h2 { font-size: var(--text-size-h2); }
+h3 { font-size: var(--text-size-h3); }
+h4, h5, h6 { font-size: var(--text-size); }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+a:hover {
+  border-bottom-color: var(--link-hover);
+  color: var(--link-hover);
+}
+
+p { margin-bottom: var(--space-sm); }
+
+ul, ol { margin-bottom: var(--space-sm); padding-left: var(--space-lg); }
+
+ul { list-style-type: square; }
+ol { list-style-type: decimal; }
+
+li { margin-bottom: 0.25rem; }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-lg) 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--bg-code);
+  padding: 0.15em 0.3em;
+  border-radius: 2px;
+}
+
+pre {
+  font-family: var(--font-mono);
+  background: var(--bg-code);
+  padding: var(--space-sm);
+  overflow-x: auto;
+  border-radius: 2px;
+  border: 1px solid var(--border-soft);
+  font-size: var(--text-size-sm);
+  line-height: 1.6;
+  margin-bottom: var(--space-sm);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: var(--space-sm);
+  margin: var(--space-sm) 0;
+  color: var(--blockquote-text);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-size-sm);
+  display: block;
+  overflow-x: auto;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: var(--space-xs) var(--space-sm);
+  text-align: left;
+}
+
+thead {
+  background: var(--table-header-bg);
+}
+
+th { font-weight: 600; }
+
+.footnote-ref {
+  font-size: 0.8em;
+  vertical-align: super;
+}
+
+.footnotes {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-soft);
+  font-size: var(--text-size-sm);
+}
+
+.footnotes ol {
+  padding-left: var(--space-md);
+}

@@ -1,0 +1,36 @@
+---
+import { SITE } from '../config/site.ts';
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>{SITE.footer.text}</span>
+    <span class="separator">·</span>
+    <span>Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></span>
+    <span class="separator">·</span>
+    <a href="/rss.xml">RSS</a>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  padding: var(--space-sm) 0;
+  margin-top: var(--space-xl);
+}
+
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+}
+
+.separator {
+  color: var(--text-faint);
+}
+</style>

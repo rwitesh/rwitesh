@@ -1,0 +1,142 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import { getReadingTimeFromText } from '../lib/reading-time.ts';
+import { generatePreview } from '../lib/preview.ts';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  compact?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { post, compact = false, headingLevel = 'h2' } = Astro.props;
+const { title, pubDate, description, tags } = post.data;
+const minutesRead = post.body ? getReadingTimeFromText(post.body) : '';
+const Heading = headingLevel;
+const preview = description || generatePreview(post.body || '', 150);
+---
+
+<article class="post-entry" class:list={[{ compact }]}>
+  <a href={`/blog/${post.id}/`} class="post-link">
+    {compact ? (
+      <div class="post-line">
+        <span class="post-date"><FormattedDate date={pubDate} /></span>
+        <Heading class="post-title">{title}</Heading>
+      </div>
+    ) : (
+      <>
+        <div class="post-meta">
+          <FormattedDate date={pubDate} />
+          {minutesRead && (
+            <>
+              <span class="dot">·</span>
+              <span class="read-time">{minutesRead}</span>
+            </>
+          )}
+        </div>
+        <Heading class="post-title">{title}</Heading>
+        <p class="post-desc">{preview}</p>
+        {tags && tags.length > 0 && (
+          <div class="post-tags">
+            {tags.map((tag) => <span class="tag">#{tag}</span>)}
+          </div>
+        )}
+      </>
+    )}
+  </a>
+</article>
+
+<style>
+.post-entry {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.post-entry:last-child {
+  border-bottom: none;
+}
+
+.post-entry.compact {
+  padding: 0.4rem 0;
+}
+
+.post-link {
+  display: block;
+  color: inherit;
+  border-bottom: none;
+}
+
+.post-link:hover {
+  border-bottom: none;
+}
+
+.post-line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.post-date {
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+  margin-bottom: var(--space-xs);
+}
+
+.dot {
+  opacity: 0.5;
+}
+
+.post-title {
+  font-size: var(--text-size-h3);
+  margin-bottom: var(--space-xs);
+  letter-spacing: -0.01em;
+  transition: color 0.12s ease;
+}
+
+.post-link:hover .post-title {
+  color: var(--link);
+}
+
+.post-entry.compact .post-title {
+  font-size: var(--text-size);
+  font-weight: 500;
+}
+
+.post-desc {
+  font-size: var(--text-size-sm);
+  color: var(--text-soft);
+  margin-bottom: 0;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.tag {
+  font-size: var(--text-size-sm);
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+}
+
+@media (max-width: 30rem) {
+  .post-line {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}
+</style>

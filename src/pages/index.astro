@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => import.meta.env.PROD ? post.data.draft !== true : true)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const recentPosts = allPosts.slice(0, 5);
+
+const about = await getEntry('pages', 'about');
+const AboutContent = about ? (await render(about)).Content : null;
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-head">
+      <img src="/images/profile.jpg" alt="Rwitesh Bera" width="72" height="72" class="profile-photo" loading="eager" />
+      <h1 class="hero-title">Rwitesh Bera</h1>
+    </div>
+    {AboutContent && (
+      <div class="prose">
+        <AboutContent />
+      </div>
+    )}
+  </section>
+
+  <section class="recent-section">
+    <h2 class="section-heading">recent posts</h2>
+    {recentPosts.length > 0 ? (
+      <div class="post-list">
+        {recentPosts.map((post) => (
+          <PostCard post={post} compact={true} headingLevel="h3" />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">No posts yet. Check back soon.</p>
+    )}
+    {allPosts.length > 5 && (
+      <a href="/blog" class="view-all">view all posts &rarr;</a>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+.hero {
+  padding-bottom: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.hero-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.profile-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--profile-border);
+  flex-shrink: 0;
+}
+
+.hero-title {
+  font-size: var(--text-size-h1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.prose {
+  font-size: var(--text-size);
+  line-height: var(--line-height);
+}
+
+.prose :global(p) {
+  margin-bottom: var(--space-xs);
+}
+
+.prose :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.prose :global(h2) {
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-size-h3);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.prose :global(ul) {
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-md);
+}
+
+.section-heading {
+  font-size: var(--text-size);
+  color: var(--text-faint);
+  font-weight: 500;
+  text-transform: lowercase;
+  margin-bottom: var(--space-sm);
+  letter-spacing: 0.02em;
+}
+
+.recent-section {
+  margin-bottom: var(--space-md);
+}
+
+.empty {
+  color: var(--text-faint);
+  font-size: var(--text-size-sm);
+}
+
+.view-all {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-size: var(--text-size-sm);
+  color: var(--text-soft);
+}
+
+.view-all:hover {
+  color: var(--link);
+}
+
+@media (max-width: 30rem) {
+  .profile-photo {
+    width: 60px;
+    height: 60px;
+  }
+}
+</style>

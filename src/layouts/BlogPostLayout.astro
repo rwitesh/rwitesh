@@ -1,0 +1,207 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  minutesRead?: string;
+}
+
+const { post, minutesRead } = Astro.props;
+const { title, pubDate, updatedDate, tags, description } = post.data;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  type="article"
+  publishedTime={pubDate.toISOString()}
+  tags={tags}
+>
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-h1">{title}</h1>
+      <div class="post-meta">
+        <FormattedDate date={pubDate} />
+        {updatedDate && (
+          <>
+            <span class="dot">·</span>
+            <span>updated <FormattedDate date={updatedDate} /></span>
+          </>
+        )}
+        <span class="dot">·</span>
+        <span>{minutesRead}</span>
+      </div>
+      {tags && tags.length > 0 && (
+        <div class="post-tags">
+          {tags.map((tag) => <span class="tag">#{tag}</span>)}
+        </div>
+      )}
+    </header>
+    <div class="post-body">
+      <slot />
+    </div>
+    <a href="/blog" class="back-link">&larr; back to all posts</a>
+  </article>
+
+  <script>
+    document.querySelectorAll('pre').forEach((pre) => {
+      if (pre.querySelector('.copy-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      btn.textContent = 'copy';
+      btn.addEventListener('click', async () => {
+        const code = pre.querySelector('code');
+        if (!code) return;
+        try {
+          await navigator.clipboard.writeText(code.textContent || '');
+          btn.textContent = 'copied';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = 'copy';
+            btn.classList.remove('copied');
+          }, 2000);
+        } catch {
+          btn.textContent = 'error';
+          setTimeout(() => { btn.textContent = 'copy'; }, 2000);
+        }
+      });
+      pre.appendChild(btn);
+    });
+  </script>
+</BaseLayout>
+
+<style>
+.post {
+  max-width: var(--max-width);
+}
+
+.post-header {
+  margin-bottom: var(--space-lg);
+}
+
+.post-h1 {
+  font-size: var(--text-size-h1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+  flex-wrap: wrap;
+}
+
+.dot {
+  opacity: 0.5;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.tag {
+  font-size: var(--text-size-sm);
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+}
+
+.post-body :global(h2) {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-size-h2);
+}
+
+.post-body :global(h3) {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-size-h3);
+}
+
+.post-body :global(h4),
+.post-body :global(h5),
+.post-body :global(h6) {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+
+.post-body :global(p) {
+  margin-bottom: var(--space-sm);
+}
+
+.post-body :global(pre) {
+  margin-bottom: var(--space-sm);
+  position: relative;
+}
+
+.post-body :global(pre:hover .copy-btn) {
+  opacity: 1;
+}
+
+.post-body :global(.copy-btn) {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.post-body :global(.copy-btn:hover) {
+  color: var(--text);
+}
+
+.post-body :global(.copy-btn.copied) {
+  color: var(--link);
+  opacity: 1;
+}
+
+.post-body :global(.copy-btn:focus-visible) {
+  opacity: 1;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.post-body :global(blockquote) {
+  margin: var(--space-sm) 0;
+}
+
+.post-body :global(ul),
+.post-body :global(ol) {
+  margin-bottom: var(--space-sm);
+}
+
+.post-body :global(table) {
+  margin-bottom: var(--space-sm);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: var(--space-lg);
+  font-size: var(--text-size-sm);
+  color: var(--text-soft);
+}
+
+.back-link:hover {
+  color: var(--link);
+}
+</style>
