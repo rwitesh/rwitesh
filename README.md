@@ -16,6 +16,16 @@ npm run typecheck  # type-check .astro files
 npm run deploy     # build + wrangler deploy (manual; CI runs them separately)
 ```
 
+## CMS (Sveltia CMS)
+
+The project includes **Sveltia CMS**, a lightweight, React-free, Git-based CMS that runs entirely in the browser using the native **File System Access API**.
+
+* **Access the CMS locally:** Start the dev server (`npm run dev`) and visit `http://localhost:4321/admin/`.
+* **Local Editing:** Click **"Work with Local Repository"**, select the project directory, and grant permission. The CMS will edit markdown files in `src/content/` directly.
+* **Production/Live:** You can configure Sveltia to authenticate with GitHub using a Personal Access Token (PAT) for remote editing.
+* **No Dependencies:** Since Sveltia CMS is loaded via a CDN in `src/pages/admin.astro` and configured via `public/admin/config.yml`, it adds zero npm packages, zero bundle size, and zero React overhead to the production build.
+
+
 ## Content
 
 - **Blog posts:** `src/content/blog/*.md` — drop a file and it appears on the homepage, `/blog`, RSS, and sitemap.
@@ -61,12 +71,12 @@ src/
   components/             # SEO, Header, Footer, PostCard, ...
   layouts/                # BaseLayout, BlogPostLayout
   lib/                    # reading-time remark plugin
-  pages/                  # index, blog/index, blog/[slug], rss.xml.ts, 404
+  pages/                  # index, blog/index, blog/[slug], rss.xml.ts, 404, admin.astro (Sveltia CMS page)
   styles/global.css       # resets, CSS variables, typography
 content.config.ts         # content collection schemas
 astro.config.mjs          # site URL, markdown/shiki config
 wrangler.jsonc            # Cloudflare Worker config
-public/                   # robots.txt, favicon.svg, prompt.md
+public/                   # robots.txt, favicon.svg, prompt.md, admin/ (Sveltia CMS)
 ```
 
 ## Notes
