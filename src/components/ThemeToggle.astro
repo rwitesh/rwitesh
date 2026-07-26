@@ -61,10 +61,30 @@
   const btn = document.getElementById('theme-toggle');
   if (btn) {
     btn.addEventListener('click', () => {
+      document.documentElement.classList.add('theme-transitioning');
+      
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 300);
     });
   }
+
+  // Listen to system theme changes and update dynamically if no user override is saved
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      document.documentElement.classList.add('theme-transitioning');
+      
+      const next = e.matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 300);
+    }
+  });
 </script>
