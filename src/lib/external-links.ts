@@ -1,7 +1,7 @@
 import { visit } from 'unist-util-visit';
 
 export function rehypeExternalLinks() {
-  return function (tree) {
+  return function (tree: any) {
     visit(tree, 'element', function (node) {
       if (node.tagName !== 'a') return;
       const href = node.properties?.href;
