@@ -12,7 +12,7 @@ export const SITE = {
   },
   nav: [
     { label: 'Home', href: '/' },
-    { label: 'Blog', href: '/blog' },
+    { label: 'Posts', href: '/posts' },
   ],
   footer: {
     text: `© ${new Date().getFullYear()} Rwitesh Bera`,

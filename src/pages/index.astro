@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
 
-const allPosts = (await getCollection('blog'))
+const allPosts = (await getCollection('posts'))
   .filter((post) => import.meta.env.PROD ? post.data.draft !== true : true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -38,7 +38,7 @@ const HomeContent = home ? (await render(home)).Content : null;
       <p class="empty">No posts yet. Check back soon.</p>
     )}
     {allPosts.length > 5 && (
-      <a href="/blog" class="view-all">view all posts &rarr;</a>
+      <a href="/posts" class="view-all">view all posts &rarr;</a>
     )}
   </section>
 </BaseLayout>

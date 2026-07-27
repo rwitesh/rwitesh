@@ -1,6 +1,6 @@
-# Rwitesh Bera — Portfolio & Blog
+# Rwitesh Bera — Portfolio & Posts
 
-Static personal site and blog built with **Astro 7** (static output) and TypeScript.
+Static personal site and posts built with **Astro 7** (static output) and TypeScript.
 
 ## Getting Started
 

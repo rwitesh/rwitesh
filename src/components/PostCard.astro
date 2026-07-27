@@ -5,7 +5,7 @@ import { getReadingTimeFromText } from '../lib/reading-time.ts';
 import { generatePreview } from '../lib/preview.ts';
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<'posts'>;
   compact?: boolean;
   headingLevel?: 'h2' | 'h3';
 }
@@ -18,7 +18,7 @@ const preview = description || generatePreview(post.body || '', 150);
 ---
 
 <article class="post-entry" class:list={[{ compact }]}>
-  <a href={`/blog/${post.id}/`} class="post-link">
+  <a href={`/posts/${post.id}/`} class="post-link">
     {compact ? (
       <div class="post-line">
         <span class="post-date"><FormattedDate date={pubDate} /></span>

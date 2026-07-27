@@ -3,8 +3,7 @@ import { getCollection } from 'astro:content';
 import { SITE } from '../config/site.ts';
 
 export async function GET(context: { site: URL }) {
-  const blog = await getCollection('blog');
-  const posts = blog
+  const posts = (await getCollection('posts'))
     .filter((post) => import.meta.env.PROD ? post.data.draft !== true : true)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -16,7 +15,7 @@ export async function GET(context: { site: URL }) {
       title: post.data.title,
       pubDate: post.data.pubDate,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      link: `/posts/${post.id}/`,
     })),
     customData: `<language>en-us</language>`,
   });

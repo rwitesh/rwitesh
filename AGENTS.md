@@ -27,8 +27,8 @@ All content is managed through Astro Content Collections, defined in `src/conten
   }
   ```
 
-### 2. Blog Collection
-- **Source:** `src/content/blog/`
+### 2. Posts Collection
+- **Source:** `src/content/posts/`
 - **Zod Schema & Frontmatter Example:**
   ```yaml
   ---
@@ -79,12 +79,12 @@ Deployment is managed via **Workers Builds** connected to the GitHub repository:
 ```
 src/
   config/site.ts          # site config (title, url, social, nav)
-  content/blog/*.md       # blog posts
+  content/posts/*.md      # posts
   content/pages/home.md   # home/about section content
   components/             # SEO, Header, Footer, PostCard, ...
-  layouts/                # BaseLayout, BlogPostLayout
+  layouts/                # BaseLayout, PostLayout
   lib/                    # reading-time remark plugin
-  pages/                  # index, blog/index, blog/[slug], rss.xml.ts, 404, admin.astro
+  pages/                  # index, post/index, post/[slug], rss.xml.ts, 404, admin.astro
   styles/global.css       # resets, CSS variables, typography
 content.config.ts         # content collection schemas
 astro.config.mjs          # Astro settings (site URL, markdown config)

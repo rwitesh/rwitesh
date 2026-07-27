@@ -4,7 +4,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<'posts'>;
   minutesRead?: string;
 }
 
@@ -38,7 +38,7 @@ const { title, pubDate, tags, description } = post.data;
     <div class="post-body">
       <slot />
     </div>
-    <a href="/blog" class="back-link">&larr; back to all posts</a>
+    <a href="/posts" class="back-link">&larr; back to all posts</a>
   </article>
 
   <script>

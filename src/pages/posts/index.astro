@@ -3,13 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../../components/PostCard.astro';
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection('posts'))
   .filter((post) => import.meta.env.PROD ? post.data.draft !== true : true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="Blog" description="Writing by Rwitesh Bera">
-  <h1 class="page-title">blog</h1>
+<BaseLayout title="Posts" description="Writing by Rwitesh Bera">
+  <h1 class="page-title">posts</h1>
   {posts.length > 0 ? (
     <div class="post-list">
       {posts.map((post) => <PostCard post={post} />)}
