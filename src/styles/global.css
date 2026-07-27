@@ -39,6 +39,7 @@
   --table-header-bg: #f0f0f0;
   --selection-bg: #00567e1a;
   --profile-border: #c8c8c8;
+  --progress-bg: #2563eb;
 }
 
 :root[data-theme="dark"] {
@@ -58,6 +59,7 @@
   --table-header-bg: #1a1a1a;
   --selection-bg: #6cb6ff22;
   --profile-border: #333333;
+  --progress-bg: #6cb6ff;
 }
 
 *,
@@ -154,6 +156,7 @@ code {
   background: var(--bg-code);
   padding: 0.15em 0.3em;
   border-radius: 2px;
+  border: 1px solid var(--border-soft);
 }
 
 pre {
@@ -173,6 +176,7 @@ pre code {
   padding: 0;
   border-radius: 0;
   font-size: inherit;
+  border: none;
 }
 
 blockquote {
@@ -187,17 +191,18 @@ blockquote p:last-child {
 }
 
 table {
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   border-collapse: collapse;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
   font-size: var(--text-size-sm);
   display: block;
   overflow-x: auto;
 }
 
 th, td {
-  border: 1px solid var(--border);
-  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border-soft);
+  padding: 0.5rem 0.8rem;
   text-align: left;
 }
 
@@ -205,7 +210,14 @@ thead {
   background: var(--table-header-bg);
 }
 
-th { font-weight: 600; }
+th {
+  font-weight: 600;
+  color: var(--text);
+}
+
+tr:hover td {
+  background: var(--bg-code);
+}
 
 .footnote-ref {
   font-size: 0.8em;

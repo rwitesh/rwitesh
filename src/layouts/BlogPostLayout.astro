@@ -19,6 +19,8 @@ const { title, pubDate, tags, description } = post.data;
   publishedTime={pubDate.toISOString()}
   tags={tags}
 >
+  <div class="progress-bar" id="reading-progress" aria-hidden="true"></div>
+
   <article class="post">
     <header class="post-header">
       <h1 class="post-h1">{title}</h1>
@@ -40,6 +42,7 @@ const { title, pubDate, tags, description } = post.data;
   </article>
 
   <script>
+    // Copy code button
     document.querySelectorAll('pre').forEach((pre) => {
       if (pre.querySelector('.copy-btn')) return;
       const btn = document.createElement('button');
@@ -65,23 +68,47 @@ const { title, pubDate, tags, description } = post.data;
       });
       pre.appendChild(btn);
     });
+
+    // Reading progress bar
+    const progress = document.getElementById('reading-progress');
+    if (progress) {
+      window.addEventListener('scroll', () => {
+        const winScroll = window.scrollY || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+        progress.style.width = `${scrolled}%`;
+      }, { passive: true });
+    }
   </script>
 </BaseLayout>
 
 <style>
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--progress-bg);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
 .post {
   max-width: var(--max-width);
 }
 
 .post-header {
   margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: var(--space-md);
 }
 
 .post-h1 {
   font-size: var(--text-size-h1);
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .post-meta {
@@ -110,6 +137,7 @@ const { title, pubDate, tags, description } = post.data;
   background: var(--tag-bg);
   padding: 0.1em 0.4em;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .post-body :global(h2) {
@@ -193,9 +221,11 @@ const { title, pubDate, tags, description } = post.data;
   margin-top: var(--space-lg);
   font-size: var(--text-size-sm);
   color: var(--text-soft);
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .back-link:hover {
   color: var(--link);
+  transform: translateX(-4px);
 }
 </style>

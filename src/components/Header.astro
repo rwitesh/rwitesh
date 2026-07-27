@@ -44,12 +44,12 @@ const isActive = (href: string) =>
   justify-content: space-between;
   gap: var(--space-sm);
   font-size: var(--text-size-sm);
-  height: 2.5rem;
+  height: 2.8rem;
 }
 
 .nav-links {
   display: flex;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 }
 
 .nav-links a {
@@ -71,31 +71,31 @@ const isActive = (href: string) =>
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: var(--space-xs);
 }
 
 .divider {
   width: 1px;
   height: 18px;
   background: var(--border);
-  margin: 0 0.15rem;
+  margin: 0 var(--space-xs);
 }
 
 @media (max-width: 30rem) {
   .nav {
     padding: 0 var(--space-xs);
-    gap: var(--space-xs);
-    height: 2.2rem;
+    gap: var(--space-sm);
+    height: 2.8rem;
   }
   .nav-links {
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     flex-wrap: nowrap;
   }
   .divider {
-    margin: 0 0.05rem;
+    margin: 0 calc(var(--space-xs) * 0.6);
   }
   .nav-actions {
-    gap: 0.15rem;
+    gap: var(--space-xs);
   }
 }
 </style>
