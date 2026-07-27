@@ -277,15 +277,18 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     transform: rotate(90deg);
   }
 
-  /* Two columns. Modal height stays stable — only the preview inside rescales. */
+  /* Two columns. Height is locked to the viewport, so it NEVER changes with
+     ratio or the overflow hint — only the preview inside rescales. */
   .modal-layout {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
+    height: clamp(420px, 58vh, 540px);
   }
 
   @media (max-width: 768px) {
     .modal-layout {
       grid-template-columns: 1fr;
+      height: auto;
       max-height: calc(90vh - 40px);
       overflow-y: auto;
     }
@@ -311,11 +314,15 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
   .share-stage {
     position: relative;
     width: 100%;
-    height: clamp(360px, 48vh, 480px);
+    height: 100%;
     border-radius: 10px;
     overflow: hidden;
     background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
     background-size: 14px 14px;
+  }
+
+  @media (max-width: 768px) {
+    .share-stage { height: 340px; }
   }
 
   /* Carries the preview scale + centering. Its drop-shadow scales with the
