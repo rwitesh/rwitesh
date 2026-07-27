@@ -37,7 +37,7 @@
   --tag-text: #555555;
   --blockquote-text: #606060;
   --table-header-bg: #f0f0f0;
-  --selection-bg: #00567e1a;
+  --selection-bg: #00567e3a;
   --profile-border: #c8c8c8;
   --progress-bg: #2563eb;
 }
@@ -57,7 +57,7 @@
   --tag-text: #9a9a9a;
   --blockquote-text: #8a8a8a;
   --table-header-bg: #1a1a1a;
-  --selection-bg: #6cb6ff22;
+  --selection-bg: #6cb6ff4c;
   --profile-border: #333333;
   --progress-bg: #6cb6ff;
 }

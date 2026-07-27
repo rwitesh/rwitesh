@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import type { CollectionEntry } from 'astro:content';
+import Share from '../components/Share.astro';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -40,6 +41,8 @@ const { title, pubDate, tags, description } = post.data;
     </div>
     <a href="/posts" class="back-link">&larr; back to all posts</a>
   </article>
+
+  <Share postTitle={title} />
 
   <script>
     // Copy code button

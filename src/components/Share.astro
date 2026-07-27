@@ -1,0 +1,1108 @@
+---
+import { SITE } from '../config/site';
+
+interface Props {
+  postTitle: string;
+}
+
+
+---
+
+<!-- Floating Selection Toolbar -->
+<div id="share-toolbar" class="share-toolbar" role="toolbar" aria-label="Selection options">
+  <button id="toolbar-search" class="toolbar-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <span class="btn-text">Search</span>
+  </button>
+  <div class="toolbar-divider"></div>
+  <button id="toolbar-share" class="toolbar-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+      <polyline points="16 6 12 2 8 6"></polyline>
+      <line x1="12" y1="2" x2="12" y2="15"></line>
+    </svg>
+    <span class="btn-text">Share</span>
+  </button>
+</div>
+
+<!-- Customizer Share Modal -->
+<div id="share-modal" class="share-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  
+  <div class="modal-wrapper">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-layout">
+        <!-- Live Preview / Canvas Column -->
+        <div class="canvas-column">
+          <div class="canvas-workspace">
+            <!-- Output Wrapper (the single card element itself that is screenshotted) -->
+            <div id="share-card-wrapper" class="share-card-wrapper" data-bg="carbon" data-ratio="auto" data-font="monospace">
+              <div class="share-text-container">
+                <p id="share-card-text" class="share-card-text"></p>
+              </div>
+              <div class="share-card-footer">
+                <div class="share-author-badge">
+                  <img src="/images/profile.jpg" alt={SITE.author} class="share-author-avatar" />
+                  <span class="share-author">{SITE.author}</span>
+                </div>
+                <div id="share-card-watermark" class="share-card-watermark">rwitesh.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customization Controls Column -->
+        <div class="controls-column">
+          <h2 id="modal-title" class="controls-title">Share Selection</h2>
+          
+          <div class="control-section">
+            <label class="control-label">Background Style</label>
+            <div class="bg-selector">
+              <button class="bg-option active" data-bg="carbon" title="Carbon Dark" style="background: linear-gradient(135deg, #0f0f11 0%, #050506 100%);"></button>
+              <button class="bg-option" data-bg="slate" title="Slate Gray" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%);"></button>
+              <button class="bg-option" data-bg="minimal-light" title="Minimalist White" style="background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%); border: 1px solid #d1d1d6;"></button>
+              <button class="bg-option" data-bg="sunset" title="Sunset Glow" style="background: linear-gradient(135deg, #FF5E62 0%, #FF9966 100%);"></button>
+              <button class="bg-option" data-bg="ocean" title="Ocean Wave" style="background: linear-gradient(135deg, #02AAB0 0%, #00CDAC 100%);"></button>
+              <button class="bg-option" data-bg="cosmic" title="Cosmic Violet" style="background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);"></button>
+            </div>
+          </div>
+
+          <div class="control-section">
+            <label class="control-label">Aspect Ratio</label>
+            <div class="option-row">
+              <button class="toggle-option active" data-ratio="auto">Auto</button>
+              <button class="toggle-option" data-ratio="1-1">1:1</button>
+              <button class="toggle-option" data-ratio="16-9">16:9</button>
+              <button class="toggle-option" data-ratio="9-16">9:16</button>
+            </div>
+          </div>
+
+          <div class="control-section">
+            <label class="control-label">Font Family</label>
+            <div class="option-row">
+              <button class="toggle-option active font-family-btn" data-font="monospace">Mono</button>
+              <button class="toggle-option font-family-btn" data-font="sans">Sans</button>
+              <button class="toggle-option font-family-btn" data-font="serif">Serif</button>
+            </div>
+          </div>
+
+          <div class="actions-section">
+            <button id="btn-copy-image" class="modal-action-btn btn-primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            </button>
+            <button id="btn-share-native" class="modal-action-btn btn-secondary" style="display: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              <span>Share</span>
+            </button>
+            <button id="btn-download-image" class="modal-action-btn btn-secondary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* -----------------------------------------
+     FLOATING TOOLBAR (Slight dark in light mode)
+     ----------------------------------------- */
+  .share-toolbar {
+    position: absolute;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    background: rgba(20, 20, 25, 0.88);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    padding: 4px 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.2s;
+    pointer-events: none;
+  }
+
+  .share-toolbar.visible {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 9999px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .toolbar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  .toolbar-btn svg {
+    flex-shrink: 0;
+  }
+
+  .toolbar-divider {
+    width: 1px;
+    height: 14px;
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: 0 4px;
+  }
+
+  /* Dark Theme Overrides (Slight light in dark mode) */
+  :global([data-theme="dark"]) .share-toolbar {
+    background: rgba(50, 50, 50, 0.85);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  }
+
+  :global([data-theme="dark"]) .toolbar-btn {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  :global([data-theme="dark"]) .toolbar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  :global([data-theme="dark"]) .toolbar-divider {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
+  /* -----------------------------------------
+     MODAL LAYOUT
+     ----------------------------------------- */
+  .share-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .share-modal.visible {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .modal-wrapper {
+    position: relative;
+    z-index: 10001;
+    width: 100%;
+    max-width: 820px;
+    padding: var(--content-padding);
+    box-sizing: border-box;
+  }
+
+  .modal-content {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px var(--border);
+    overflow: hidden;
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: modal-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes modal-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+
+  .modal-close:hover {
+    background: var(--border-soft);
+    color: var(--text);
+    transform: rotate(90deg);
+  }
+
+  .modal-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    min-height: 440px;
+  }
+
+  @media (max-width: 768px) {
+    .modal-layout {
+      grid-template-columns: 1fr;
+      overflow-y: auto;
+      max-height: calc(90vh - 40px);
+    }
+  }
+
+  /* -----------------------------------------
+     CANVAS WORKSPACE
+     ----------------------------------------- */
+  .canvas-column {
+    background: var(--bg-code);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .canvas-column {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-md);
+    }
+  }
+
+  .canvas-workspace {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+  }
+
+  /* -----------------------------------------
+     SHARE CARD wrapper (single visual unit)
+     ----------------------------------------- */
+  .share-card-wrapper {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    transition: aspect-ratio 0.2s ease, width 0.2s ease;
+    overflow: hidden;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  /* Background options styling */
+  .share-card-wrapper[data-bg="sunset"] {
+    background: linear-gradient(135deg, #FF5E62 0%, #FF9966 100%);
+  }
+  .share-card-wrapper[data-bg="ocean"] {
+    background: linear-gradient(135deg, #02AAB0 0%, #00CDAC 100%);
+  }
+  .share-card-wrapper[data-bg="cosmic"] {
+    background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+  }
+  .share-card-wrapper[data-bg="carbon"] {
+    background: linear-gradient(135deg, #0f0f11 0%, #050506 100%);
+  }
+  .share-card-wrapper[data-bg="slate"] {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  }
+  .share-card-wrapper[data-bg="minimal-light"] {
+    background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  }
+
+  /* Contrast styles for Light Gradients (minimal-light) */
+  .share-card-wrapper[data-bg="minimal-light"] {
+    color: #1a1a1a;
+  }
+  .share-card-wrapper[data-bg="minimal-light"] .share-author {
+    color: #3a3a3c;
+  }
+  .share-card-wrapper[data-bg="minimal-light"] .share-card-watermark {
+    color: #555555;
+    opacity: 0.85;
+  }
+  .share-card-wrapper[data-bg="minimal-light"] .share-author-avatar {
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  /* Default text colors for Dark & Colorful Gradients */
+  .share-card-wrapper {
+    color: #ffffff;
+  }
+  .share-card-wrapper .share-author {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .share-card-wrapper .share-card-watermark {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .share-card-wrapper .share-author-avatar {
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  /* Font Family choices */
+  .share-card-wrapper[data-font="monospace"] .share-card-text {
+    font-family: var(--font-mono);
+  }
+  .share-card-wrapper[data-font="sans"] .share-card-text {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+  }
+  .share-card-wrapper[data-font="serif"] .share-card-text {
+    font-family: var(--font-lora), Georgia, serif;
+    font-weight: 500;
+  }
+
+  /* Aspect Ratio styles */
+  .share-card-wrapper[data-ratio="auto"] {
+    aspect-ratio: auto;
+    width: 100%;
+  }
+  .share-card-wrapper[data-ratio="1-1"] {
+    aspect-ratio: 1 / 1;
+    width: 360px;
+    height: 360px;
+  }
+  .share-card-wrapper[data-ratio="16-9"] {
+    aspect-ratio: 16 / 9;
+    width: 460px;
+  }
+  .share-card-wrapper[data-ratio="9-16"] {
+    aspect-ratio: 9 / 16;
+    width: 270px;
+    height: 480px;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .share-text-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+  }
+
+  .share-card-text {
+    margin: 0;
+    white-space: pre-wrap;
+    text-align: left;
+    line-height: 1.5;
+    font-size: 0.92rem;
+  }
+
+  .share-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.25); /* distinct visible divider */
+    padding-top: var(--space-xs);
+    margin-top: auto;
+    gap: 12px;
+  }
+
+  /* Adjust divider for minimalist white background */
+  .share-card-wrapper[data-bg="minimal-light"] .share-card-footer {
+    border-top-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .share-card-meta {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  .share-author-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .share-author-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  .share-author {
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .share-card-watermark {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* -----------------------------------------
+     CONTROLS COLUMN
+     ----------------------------------------- */
+  .controls-column {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 768px) {
+    .controls-column {
+      padding: var(--space-md);
+    }
+  }
+
+  .controls-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+    letter-spacing: -0.01em;
+  }
+
+  .control-section {
+    margin-bottom: var(--space-sm);
+  }
+
+  .control-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .bg-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .bg-option {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s ease;
+    position: relative;
+  }
+
+  .bg-option:hover {
+    transform: scale(1.15);
+  }
+
+  .bg-option.active {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+    border-color: transparent;
+  }
+
+  /* Segmented Option Row (Premium low-profile design) */
+  .option-row {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-code);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .option-row .toggle-option {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    text-align: center;
+  }
+
+  .option-row .toggle-option:hover {
+    color: var(--text);
+  }
+
+  .option-row .toggle-option.active {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  .actions-section {
+    margin-top: auto;
+    display: flex;
+    gap: 6px;
+    padding-top: var(--space-sm);
+    width: 100%;
+  }
+
+  .modal-action-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 8px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .modal-action-btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+    flex: 1.2; /* prioritize primary button visually */
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-secondary {
+    background: var(--bg-code);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .btn-secondary:hover {
+    background: var(--border-soft);
+  }
+</style>
+
+<script>
+  import * as htmlToImage from 'html-to-image';
+
+  // CONFIG & CONSTANTS
+  const CONFIG = {
+    MIN_SELECTION_LENGTH: 5,
+    EXPORT_PIXEL_RATIO: 2
+  };
+
+  // STATE
+  const state = {
+    selectedText: '',
+    isModalOpen: false,
+    renderedBlob: null as Blob | null,
+    isRendering: false,
+    avatarBase64: ''
+  };
+
+  // DOM ELEMENTS
+  const el = {
+    toolbar: document.getElementById('share-toolbar'),
+    btnSearch: document.getElementById('toolbar-search'),
+    btnShare: document.getElementById('toolbar-share'),
+    
+    modal: document.getElementById('share-modal'),
+    modalClose: document.getElementById('modal-close'),
+    modalBackdrop: document.getElementById('modal-backdrop'),
+    
+    cardWrapper: document.getElementById('share-card-wrapper'),
+    cardText: document.getElementById('share-card-text'),
+    watermark: document.getElementById('share-card-watermark'),
+    
+    bgSelectorOptions: document.querySelectorAll('.bg-option'),
+    ratioOptions: document.querySelectorAll('.toggle-option[data-ratio]'),
+    fontOptions: document.querySelectorAll('.font-family-btn'),
+    
+    btnCopyImage: document.getElementById('btn-copy-image'),
+    btnDownloadImage: document.getElementById('btn-download-image'),
+    btnShareNative: document.getElementById('btn-share-native')
+  };
+
+  // FUNCTIONS
+
+  // Pre-load the avatar image asset and convert it to a Base64 data URL at runtime.
+  // This solves base-url resolution bugs inside SVG XML strings cloned by html-to-image.
+  async function fetchAvatarAsBase64() {
+    try {
+      const response = await fetch('/images/profile.jpg');
+      const blob = await response.blob();
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (err) {
+      console.warn('Failed to pre-load avatar as base64 data URI:', err);
+      return '/images/profile.jpg'; // fallback
+    }
+  }
+
+  // Pre-render the card wrapper to a blob in the background.
+  // This stores the rendered image blob inside `state.renderedBlob`.
+  // When the user clicks "Copy Image", the copy action is 100% synchronous,
+  // preventing user-activation token expiration (which blocks clipboard writes in Chrome).
+  async function preRenderBlob() {
+    if (!el.cardWrapper) return;
+    state.isRendering = true;
+    
+    try {
+      const blob = await htmlToImage.toBlob(el.cardWrapper, {
+        pixelRatio: CONFIG.EXPORT_PIXEL_RATIO,
+        backgroundColor: 'transparent',
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left'
+        }
+      });
+      if (blob) {
+        state.renderedBlob = blob;
+      }
+    } catch (err) {
+      console.warn('Background rendering failed:', err);
+    } finally {
+      state.isRendering = false;
+    }
+  }
+
+  // Mathematically scale card font size based on the physical area of the card relative to character count.
+  // This volumetric calculation ensures text always fits boundaries without arbitrary magic-number brackets.
+  function adjustFontSize() {
+    if (!el.cardWrapper || !el.cardText) return;
+
+    const textLength = state.selectedText.length || 1;
+    const ratio = el.cardWrapper.getAttribute('data-ratio') || 'auto';
+    
+    let maxFont = 1.15;
+    let minFont = 0.65;
+    let calculatedFont = 0.92;
+
+    if (ratio === 'auto') {
+      // Auto grows vertically, so only slight scaling is needed for large text selections
+      calculatedFont = 1.1 - (textLength * 0.0004);
+    } else {
+      // Fixed aspect ratios (1:1, 16:9, 9:16)
+      let cardWidth = 360;
+      let cardHeight = 360;
+
+      if (ratio === '16-9') {
+        cardWidth = 460;
+        cardHeight = 258;
+      } else if (ratio === '9-16') {
+        cardWidth = 270;
+        cardHeight = 480;
+      }
+      
+      // Calculate character density based on available text viewport height (height - footer padding)
+      const textHeightLimit = cardHeight - 75;
+      const cardArea = cardWidth * textHeightLimit;
+      const charArea = cardArea / textLength;
+      
+      // Convert area weight to linear font sizing factor
+      calculatedFont = Math.sqrt(charArea) * 0.052;
+    }
+
+    const finalFont = Math.min(maxFont, Math.max(minFont, calculatedFont));
+    el.cardText.style.fontSize = `${finalFont}rem`;
+  }
+
+  function handleSelectionChange() {
+    const selection = window.getSelection();
+    if (!selection) return;
+
+    const selectedText = selection.toString().trim();
+    const postBody = document.querySelector('.post-body');
+
+    if (
+      selectedText.length > CONFIG.MIN_SELECTION_LENGTH &&
+      postBody &&
+      postBody.contains(selection.anchorNode) &&
+      postBody.contains(selection.focusNode)
+    ) {
+      state.selectedText = selectedText;
+      showToolbar(selection);
+    } else {
+      hideToolbar();
+    }
+  }
+
+  function showToolbar(selection: Selection) {
+    if (!el.toolbar) return;
+
+    const range = selection.getRangeAt(0);
+    const rects = range.getClientRects();
+    if (rects.length === 0) return;
+
+    const boundingBox = range.getBoundingClientRect();
+    el.toolbar.classList.add('visible');
+    
+    const toolbarWidth = el.toolbar.offsetWidth || 160;
+    const toolbarHeight = el.toolbar.offsetHeight || 38;
+
+    let top = boundingBox.top + window.scrollY - toolbarHeight - 8;
+    let left = boundingBox.left + window.scrollX + (boundingBox.width / 2) - (toolbarWidth / 2);
+
+    const pad = 10;
+    left = Math.max(pad, Math.min(left, window.innerWidth - toolbarWidth - pad));
+    
+    if (boundingBox.top - toolbarHeight - 8 < 0) {
+      top = boundingBox.bottom + window.scrollY + 8;
+    }
+
+    el.toolbar.style.top = `${top}px`;
+    el.toolbar.style.left = `${left}px`;
+  }
+
+  function hideToolbar() {
+    el.toolbar?.classList.remove('visible');
+  }
+
+  async function openModal() {
+    if (!el.modal || !el.cardText) return;
+    
+    el.cardText.textContent = state.selectedText;
+
+    // Always default the aspect ratio back to "Auto" and font back to "Mono" when a new selection opens the modal
+    if (el.cardWrapper) {
+      el.cardWrapper.setAttribute('data-ratio', 'auto');
+      el.cardWrapper.setAttribute('data-font', 'monospace');
+    }
+    el.ratioOptions.forEach(btn => {
+      if (btn.getAttribute('data-ratio') === 'auto') {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    el.fontOptions.forEach(btn => {
+      if (btn.getAttribute('data-font') === 'monospace') {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Automatically scale typography to fit selection perfectly
+    adjustFontSize();
+    
+    // Set dynamic watermark link of main domain name (e.g. rwitesh.com)
+    if (el.watermark) {
+      el.watermark.textContent = window.location.hostname;
+    }
+
+    // Dynamic base64 avatar loading to prevent cross-origin SVG canvas taint
+    if (!state.avatarBase64) {
+      state.avatarBase64 = await fetchAvatarAsBase64();
+    }
+    const avatarImg = el.cardWrapper?.querySelector('.share-author-avatar') as HTMLImageElement;
+    if (avatarImg && state.avatarBase64) {
+      avatarImg.src = state.avatarBase64;
+    }
+
+    // Dynamic native share sheet checking
+    const canShareFiles = typeof navigator.share === 'function' && typeof navigator.canShare === 'function' && navigator.canShare({
+      files: [new File([new Blob()], 'test.png', { type: 'image/png' })]
+    });
+    if (canShareFiles && el.btnShareNative) {
+      el.btnShareNative.style.display = 'inline-flex';
+    }
+
+    el.modal.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    
+    window.getSelection()?.removeAllRanges();
+    hideToolbar();
+    state.isModalOpen = true;
+
+    // Immediately trigger a background render when modal opens
+    state.renderedBlob = null;
+    setTimeout(preRenderBlob, 100);
+  }
+
+  function closeModal() {
+    if (!el.modal) return;
+    el.modal.classList.remove('visible');
+    document.body.style.overflow = '';
+    state.isModalOpen = false;
+  }
+
+  async function handleImageCopy() {
+    if (!el.btnCopyImage || !el.cardWrapper) return;
+
+    try {
+      // If the background render has already succeeded, copy the pre-rendered blob instantly (0ms delay)
+      // which guarantees user-activation remains valid!
+      let blob = state.renderedBlob;
+      
+      // Fallback: If it's not ready yet (or is currently rendering), render it synchronously
+      if (!blob) {
+        blob = await htmlToImage.toBlob(el.cardWrapper, {
+          pixelRatio: CONFIG.EXPORT_PIXEL_RATIO,
+          backgroundColor: 'transparent'
+        });
+      }
+
+      if (blob) {
+        const item = new ClipboardItem({ 'image/png': blob });
+        await navigator.clipboard.write([item]);
+      } else {
+        throw new Error('No blob generated');
+      }
+    } catch (err) {
+      console.warn('Direct image clipboard copy failed, triggering fallback write:', err);
+      // Fallback: try copy using standard clipboard write with dynamic promise to hold activation context
+      try {
+        const promise = htmlToImage.toBlob(el.cardWrapper, {
+          pixelRatio: CONFIG.EXPORT_PIXEL_RATIO,
+          backgroundColor: 'transparent'
+        }).then(b => {
+          if (!b) throw new Error('Promise blob failed');
+          return b;
+        });
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': promise })]);
+      } catch (fbErr) {
+        console.error('Secondary clipboard write failed:', fbErr);
+      }
+    }
+  }
+
+  async function handleImageDownload() {
+    if (!el.btnDownloadImage || !el.cardWrapper) return;
+
+    try {
+      const dataUrl = await htmlToImage.toPng(el.cardWrapper, {
+        pixelRatio: CONFIG.EXPORT_PIXEL_RATIO,
+        backgroundColor: 'transparent',
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left'
+        }
+      });
+      const link = document.createElement('a');
+      link.download = `share-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Image download failed:', err);
+    }
+  }
+
+  async function handleNativeShare() {
+    if (!el.btnShareNative || !el.cardWrapper) return;
+
+    try {
+      let blob = state.renderedBlob;
+      if (!blob) {
+        blob = await htmlToImage.toBlob(el.cardWrapper, {
+          pixelRatio: CONFIG.EXPORT_PIXEL_RATIO,
+          backgroundColor: 'transparent'
+        });
+      }
+      if (blob) {
+        const file = new File([blob], `share-${Date.now()}.png`, { type: 'image/png' });
+        await navigator.share({
+          files: [file],
+          title: 'Share Quote',
+          text: `Quoted from ${window.location.hostname}`
+        });
+      } else {
+        throw new Error('Blob generation failed');
+      }
+    } catch (err) {
+      console.error('Native share failed:', err);
+    }
+  }
+
+  // INITIALIZATION
+  function init() {
+    document.addEventListener('selectionchange', handleSelectionChange);
+    
+    el.toolbar?.addEventListener('mousedown', e => e.preventDefault());
+
+    el.btnSearch?.addEventListener('click', () => {
+      if (!state.selectedText) return;
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(state.selectedText)}`, '_blank');
+      hideToolbar();
+    });
+
+    el.btnShare?.addEventListener('click', openModal);
+    el.modalClose?.addEventListener('click', closeModal);
+    el.modalBackdrop?.addEventListener('click', closeModal);
+    
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && state.isModalOpen) closeModal();
+    });
+
+    // Double-click to select whole paragraph/block
+    document.addEventListener('dblclick', e => {
+      const postBody = document.querySelector('.post-body');
+      if (!postBody || !postBody.contains(e.target as Node)) return;
+      
+      const selection = window.getSelection();
+      if (!selection) return;
+      
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'P' || target.tagName === 'LI' || target.tagName === 'BLOCKQUOTE') {
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.dispatchEvent(new Event('selectionchange'));
+      }
+    });
+
+    // Background style presets
+    el.bgSelectorOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.bgSelectorOptions.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const bg = btn.getAttribute('data-bg');
+        if (el.cardWrapper && bg) {
+          el.cardWrapper.setAttribute('data-bg', bg);
+          
+          // Re-render blob in background when color options change
+          state.renderedBlob = null;
+          setTimeout(preRenderBlob, 150);
+        }
+      });
+    });
+
+    // Font Family controls
+    el.fontOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const parent = btn.parentElement;
+        if (!parent) return;
+        
+        parent.querySelectorAll('.font-family-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const font = btn.getAttribute('data-font');
+        if (font && el.cardWrapper) {
+          el.cardWrapper.setAttribute('data-font', font);
+          state.renderedBlob = null;
+          setTimeout(preRenderBlob, 150);
+        }
+      });
+    });
+
+    // Aspect ratio toggles
+    el.ratioOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const parent = btn.parentElement;
+        if (!parent) return;
+        
+        parent.querySelectorAll('[data-ratio]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const ratio = btn.getAttribute('data-ratio');
+        if (ratio && el.cardWrapper) {
+          // Automatically adjust card layout aspect ratio
+          el.cardWrapper.setAttribute('data-ratio', ratio);
+
+          // Automatically scale typography to fit selection perfectly
+          adjustFontSize();
+
+          // Re-render blob in background when aspect ratios change
+          state.renderedBlob = null;
+          setTimeout(preRenderBlob, 150);
+        }
+      });
+    });
+
+    el.btnCopyImage?.addEventListener('click', handleImageCopy);
+    el.btnDownloadImage?.addEventListener('click', handleImageDownload);
+    el.btnShareNative?.addEventListener('click', handleNativeShare);
+  }
+
+  init();
+</script>
