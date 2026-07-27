@@ -5,7 +5,7 @@ interface Props {
   postTitle: string;
 }
 
-/* Stable hostname for the watermark across localhost / preview / prod. */
+// Stable hostname for the watermark
 const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 ---
 
@@ -43,11 +43,10 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
       <div class="modal-layout">
         <div class="canvas-column">
           <div id="share-stage" class="share-stage">
-            {/* The scaler carries the preview scale + centering so the artboard
-                below stays transform/offset-free and always screenshots cleanly. */}
+            {/* Scale and center the preview wrapper */}
             <div id="share-scaler" class="share-scaler">
-              {/* The artboard: fixed export resolution. This is the screenshot source. */}
-              <div id="share-card" class="share-card" data-bg="carbon" data-ratio="auto" data-font="monospace">
+              {/* Fixed resolution container for clean capture */}
+              <div id="share-card" class="share-card" data-bg="carbon" data-ratio="1-1" data-font="monospace">
                 <div class="card-text-wrap">
                   <p id="share-card-text" class="card-text"></p>
                 </div>
@@ -81,7 +80,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
           <div class="control-section">
             <label class="control-label">Aspect Ratio</label>
             <div class="option-row">
-              <button class="toggle-option" data-ratio="auto">Auto</button>
               <button class="toggle-option" data-ratio="1-1">1:1</button>
               <button class="toggle-option" data-ratio="16-9">16:9</button>
               <button class="toggle-option" data-ratio="9-16">9:16</button>
@@ -276,12 +274,11 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     transform: rotate(90deg);
   }
 
-  /* Two columns. Height is locked to the viewport, so it NEVER changes with
-     ratio or the overflow hint — only the preview inside rescales. */
+  /* Layout with fixed height viewport */
   .modal-layout {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    height: clamp(420px, 58vh, 540px);
+    height: clamp(480px, 62vh, 560px);
   }
 
   @media (max-width: 768px) {
@@ -293,7 +290,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     }
   }
 
-  /* Preview stage: fixed-size viewport that never resizes with ratio */
+  /* Preview viewport container */
   .canvas-column {
     background: var(--bg-code);
     border-right: 1px solid var(--border);
@@ -324,8 +321,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     .share-stage { height: 340px; }
   }
 
-  /* Carries the preview scale + centering. Its drop-shadow scales with the
-     transform but lives on the wrapper, never on the captured card. */
+  /* Preview scale container with drop shadow */
   .share-scaler {
     position: absolute;
     top: 0;
@@ -334,8 +330,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.28));
   }
 
-  /* The artboard: fixed export dimensions (720px design width). Never carries a
-     transform/offset itself, so html-to-image always captures it pixel-perfect. */
+  /* Fixed-width capture container */
   .share-card {
     position: relative;
     width: 720px;
@@ -352,11 +347,10 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     pointer-events: none;
   }
 
-  /* Exact export dimensions per ratio (single source of truth for layout) */
+  /* Design dimensions per aspect ratio */
   .share-card[data-ratio="1-1"]  { width: 720px;  height: 720px;  }
   .share-card[data-ratio="16-9"] { width: 720px;  height: 405px;  }
   .share-card[data-ratio="9-16"] { width: 720px;  height: 1280px; }
-  .share-card[data-ratio="auto"] { width: 720px;  height: auto; min-height: 360px; }
 
   .share-card[data-bg="carbon"]       { background: linear-gradient(135deg, #0f0f11 0%, #050506 100%); }
   .share-card[data-bg="slate"]        { background: linear-gradient(135deg, #374151 0%, #1f2937 100%); }
@@ -446,7 +440,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 
   /* Controls column */
   .controls-column {
-    padding: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -476,16 +470,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     letter-spacing: 0.05em;
   }
 
-  /* Soft pulse on roomier ratios when the current fit is cramped. */
-  .option-row .toggle-option.suggest {
-    color: var(--accent);
-    animation: suggest-pulse 1.9s ease-in-out infinite;
-  }
-
-  @keyframes suggest-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 transparent; }
-    50%      { box-shadow: 0 0 8px 1px color-mix(in srgb, var(--accent) 50%, transparent); }
-  }
 
   .bg-selector {
     display: flex;
@@ -554,7 +538,8 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
   }
 
   .modal-action-btn {
-    flex: 1;
+    flex: 1 1 0%;
+    min-width: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -575,7 +560,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
   .btn-primary {
     background: var(--accent);
     color: #ffffff;
-    flex: 1.2;
   }
   .btn-primary:hover { opacity: 0.9; }
 
@@ -591,9 +575,8 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
   import * as htmlToImage from 'html-to-image';
   type ToImageOptions = NonNullable<Parameters<typeof htmlToImage.toPng>[1]>;
 
-  // Artboard dimensions per ratio (CSS px). Must match the [data-ratio] CSS rules.
-  const RATIO_DIMS: Record<string, { w: number; h: number | null }> = {
-    'auto': { w: 720, h: null },
+  // Design dimensions per aspect ratio matching CSS
+  const RATIO_DIMS: Record<string, { w: number; h: number }> = {
     '1-1':  { w: 720, h: 720 },
     '16-9': { w: 720, h: 405 },
     '9-16': { w: 720, h: 1280 },
@@ -601,22 +584,16 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 
   const CONFIG = {
     MIN_SELECTION_LENGTH: 5,
-    FONT_MIN: 8,        // low enough that text always fits any fixed ratio
+    FONT_MIN: 8, // Minimum font size to guarantee fit
     FONT_MAX: 42,
-    SUGGEST_BELOW: 18,  // under this, gently nudge toward roomier ratios
   };
 
-  // 9:16 is tall — export at 1.5× (1080×1920) to keep the PNG lean; others at 2×.
+  // Export scale settings: 1.5x for 9:16, 2x for others to optimize sizes
   function pixelRatioFor(ratio: string): number {
     return ratio === '9-16' ? 1.5 : 2;
   }
 
-  // Suggest the most flattering ratio from the selection length.
-  function suggestRatio(len: number): string {
-    if (len < 70) return '1-1';
-    if (len < 260) return '16-9';
-    return 'auto';
-  }
+
 
   const state = {
     selectedText: '',
@@ -649,17 +626,17 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     btnShareNative: document.getElementById('btn-share-native'),
   };
 
-  // Fit the fixed artboard inside the stable stage by scaling the wrapper only.
+  // Fit the container to stage dimensions
   function fitCardToStage() {
     if (!el.stage || !el.scaler || !el.card) return;
     const sw = el.stage.clientWidth;
     const sh = el.stage.clientHeight;
     if (!sw || !sh) return;
 
-    const ratio = el.card.getAttribute('data-ratio') || 'auto';
-    const dims = RATIO_DIMS[ratio] || RATIO_DIMS['auto'];
+    const ratio = el.card.getAttribute('data-ratio') || '1-1';
+    const dims = RATIO_DIMS[ratio] || RATIO_DIMS['1-1'];
     const dw = dims.w;
-    const dh = dims.h ?? el.card.offsetHeight;   // auto: real content height
+    const dh = dims.h;
 
     const scale = Math.min(sw / dw, sh / dh);
     el.scaler.style.transform = `scale(${scale})`;
@@ -667,30 +644,14 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     el.scaler.style.top = `${(sh - dh * scale) / 2}px`;
   }
 
-  // Measured text fit. Fixed ratios binary-search the largest font that fits;
-  // auto picks a comfortable size by length (card grows with the text).
   function fitText() {
     if (!el.card || !el.cardText) return;
-    const ratio = el.card.getAttribute('data-ratio') || 'auto';
-    const len = (el.cardText.textContent || '').length;
 
-    if (ratio === 'auto') {
-      let px = 44;
-      if (len > 100) px = 38;
-      if (len > 260) px = 32;
-      if (len > 600) px = 27;
-      if (len > 1200) px = 23;
-      el.cardText.style.fontSize = `${px}px`;
-      el.ratioOptions.forEach(b => b.classList.remove('suggest'));
-      return;
-    }
-
-    // Fixed ratio: the canvas is fixed, so binary-search the largest font that
-    // fits. Floor is low enough that it always converges — text never overflows.
+    // Find maximum font size that fits ratio dimensions
     const wrap = el.card.querySelector('.card-text-wrap') as HTMLElement | null;
     if (!wrap) return;
 
-    // Flush layout so measurements reflect the current ratio + text.
+    // Force layout reflow for accurate measurements
     void el.card.offsetWidth;
 
     let lo = CONFIG.FONT_MIN;
@@ -699,25 +660,13 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     for (let i = 0; i < 12; i++) {
       const mid = (lo + hi) / 2;
       el.cardText.style.fontSize = `${mid}px`;
-      // 2px height safety absorbs sub-pixel rounding so the result never overflows.
-      // Width needs no margin: word-break already keeps text within the box.
+      // Subtract safety buffer to absorb sub-pixel rounding
       const fits =
         el.cardText.scrollHeight <= wrap.clientHeight - 2 &&
         el.cardText.scrollWidth <= wrap.clientWidth;
       if (fits) { best = mid; lo = mid; } else { hi = mid; }
     }
     el.cardText.style.fontSize = `${best}px`;
-    setSuggestion(ratio, best);
-  }
-
-  // Gently pulse the roomier ratios (Auto / 9:16) when the fit is cramped.
-  function setSuggestion(currentRatio: string, fontPx: number) {
-    const cramped = fontPx < CONFIG.SUGGEST_BELOW;
-    el.ratioOptions.forEach(b => {
-      const r = b.getAttribute('data-ratio');
-      const roomier = r === 'auto' || r === '9-16';
-      b.classList.toggle('suggest', cramped && roomier && r !== currentRatio);
-    });
   }
 
   function relayout() {
@@ -738,21 +687,20 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     el.fontOptions.forEach(b => b.classList.toggle('active', b.getAttribute('data-font') === font));
   }
 
-  // Build the html-to-image options. The card is already offset-free, so the
-  // clone is clean; we only neutralize shadow/filter defensively.
+  // Build export configuration options
   function captureOptions(): ToImageOptions {
     if (!el.card) return { pixelRatio: 2 } as ToImageOptions;
-    const ratio = el.card.getAttribute('data-ratio') || 'auto';
-    const dims = RATIO_DIMS[ratio] || RATIO_DIMS['auto'];
+    const ratio = el.card.getAttribute('data-ratio') || '1-1';
+    const dims = RATIO_DIMS[ratio] || RATIO_DIMS['1-1'];
     return {
       pixelRatio: pixelRatioFor(ratio),
       width: dims.w,
-      height: dims.h ?? el.card.offsetHeight,
+      height: dims.h,
       style: { boxShadow: 'none', filter: 'none' },
     } as ToImageOptions;
   }
 
-  // Pre-load the avatar as a data URI so the cloned SVG canvas isn't tainted.
+  // Load avatar as data URI to prevent canvas security blockages
   async function fetchAvatarAsBase64() {
     try {
       const blob = await (await fetch('/images/profile.jpg')).blob();
@@ -768,8 +716,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     }
   }
 
-  // Pre-render the blob in the background so Copy is instant and keeps the
-  // user-activation token (Chrome blocks clipboard writes after async gaps).
+  // Queue background pre-render to keep clipboard action synchronous
   function scheduleReRender() {
     if (!state.isModalOpen) return;
     state.renderedBlob = null;
@@ -838,7 +785,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 
     el.cardText.textContent = state.selectedText;
     selectFont('monospace');
-    selectRatio(suggestRatio(state.selectedText.length));
+    selectRatio('1-1');
 
     if (!state.avatarBase64) state.avatarBase64 = await fetchAvatarAsBase64();
     const avatar = el.card.querySelector('.author-avatar') as HTMLImageElement | null;
@@ -856,7 +803,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     hideToolbar();
     state.isModalOpen = true;
 
-    // Stage needs real dimensions, so layout after the modal is visible.
+    // Recalculate dimensions once modal is visible
     requestAnimationFrame(relayout);
   }
 
@@ -874,38 +821,51 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
       && typeof navigator.clipboard.write === 'function';
   }
 
-  // Briefly swap a button's label as action feedback.
+  // Temporarily update button label for user feedback
   function flashButton(btn: HTMLElement | null, label: string) {
     if (!btn) return;
     const span = btn.querySelector('span');
     if (!span) return;
-    const original = span.textContent;
+
+    const activeTimer = btn.getAttribute('data-flash-timer');
+    if (activeTimer) {
+      window.clearTimeout(parseInt(activeTimer, 10));
+      span.textContent = btn.getAttribute('data-original-text');
+    } else {
+      btn.setAttribute('data-original-text', span.textContent || '');
+    }
+
     span.textContent = label;
-    window.setTimeout(() => { span.textContent = original; }, 1400);
+
+    const timerId = window.setTimeout(() => {
+      span.textContent = btn.getAttribute('data-original-text');
+      btn.removeAttribute('data-original-text');
+      btn.removeAttribute('data-flash-timer');
+    }, 1400);
+
+    btn.setAttribute('data-flash-timer', timerId.toString());
   }
 
   async function handleImageCopy() {
     if (!el.card) return;
 
-    // Fallback where image clipboard isn't supported (e.g. Firefox): copy text + link.
-    if (!canCopyImage()) {
-      try {
-        await navigator.clipboard.writeText(`"${state.selectedText}"\n\n${location.href}`);
-        flashButton(el.btnCopyImage, 'Copied text');
-      } catch (err) {
-        console.warn('Text clipboard fallback failed:', err);
-      }
-      return;
-    }
-
     try {
+      if (!canCopyImage()) {
+        throw new Error('Image clipboard not supported');
+      }
       let blob = state.renderedBlob;
       if (!blob) blob = await htmlToImage.toBlob(el.card, captureOptions());
       if (!blob) throw new Error('No blob generated');
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       flashButton(el.btnCopyImage, 'Copied!');
     } catch (err) {
-      console.warn('Clipboard image write failed:', err);
+      console.warn('Clipboard image write failed, trying text fallback:', err);
+      try {
+        await navigator.clipboard.writeText(`"${state.selectedText}"\n\n${location.href}`);
+        flashButton(el.btnCopyImage, 'Copied!');
+      } catch (fallbackErr) {
+        console.error('Fallback copy failed:', fallbackErr);
+      }
     }
   }
 
@@ -917,7 +877,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
       link.download = `share-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
-      flashButton(el.btnDownloadImage, 'Saved');
     } catch (err) {
       console.error('Image download failed:', err);
     }
@@ -954,7 +913,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
       if (e.key === 'Escape' && state.isModalOpen) closeModal();
     });
 
-    // Double-click selects a whole block inside the post body.
+    // Select text block on double click
     document.addEventListener('dblclick', e => {
       const postBody = document.querySelector('.post-body');
       if (!postBody || !postBody.contains(e.target as Node)) return;
@@ -1004,7 +963,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 
     window.addEventListener('resize', () => { if (state.isModalOpen) fitCardToStage(); });
 
-    // Re-measure once web fonts have loaded so the fit is accurate for Serif.
+    // Recalculate layout once web fonts load
     document.fonts?.ready.then(() => { if (state.isModalOpen) relayout(); });
   }
 
