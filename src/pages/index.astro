@@ -9,8 +9,8 @@ const allPosts = (await getCollection('blog'))
 
 const recentPosts = allPosts.slice(0, 5);
 
-const about = await getEntry('pages', 'about');
-const AboutContent = about ? (await render(about)).Content : null;
+const home = await getEntry('pages', 'home');
+const HomeContent = home ? (await render(home)).Content : null;
 ---
 
 <BaseLayout>
@@ -19,9 +19,9 @@ const AboutContent = about ? (await render(about)).Content : null;
       <img src="/images/profile.jpg" alt="Rwitesh Bera" width="72" height="72" class="profile-photo" loading="eager" />
       <h1 class="hero-title">Rwitesh Bera</h1>
     </div>
-    {AboutContent && (
+    {HomeContent && (
       <div class="prose">
-        <AboutContent />
+        <HomeContent />
       </div>
     )}
   </section>

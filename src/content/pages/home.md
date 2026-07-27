@@ -1,6 +1,6 @@
 ---
-title: About
-description: About Rwitesh Bera
+title: Home
+description: Home page of Rwitesh Bera
 ---
 
 I'm a software engineer based in India, deeply fascinated by backend engineering, databases, and software architecture.
