@@ -4,9 +4,18 @@ import { unified } from '@astrojs/markdown-remark';
 import { remarkReadingTime } from './src/lib/reading-time.ts';
 import { rehypeExternalLinks } from './src/lib/external-links.ts';
 
+import partytown from '@astrojs/partytown';
+
 export default defineConfig({
   site: 'https://rwitesh.com',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap(),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
+  ],
   fonts: [{
     provider: fontProviders.fontsource(),
     name: "Lora",

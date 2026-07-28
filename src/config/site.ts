@@ -5,6 +5,7 @@ export const SITE = {
   author: 'Rwitesh Bera',
   url: 'https://rwitesh.com',
   email: 'rwiteshbera@gmail.com',
+  googleAnalyticsId: 'G-9FMT8Z6S9C',
   social: {
     github: 'https://github.com/rwitesh',
     x: 'https://x.com/rwiteshbera',
