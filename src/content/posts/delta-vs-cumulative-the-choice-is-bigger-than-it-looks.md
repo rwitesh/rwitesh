@@ -1,6 +1,6 @@
 ---
-title: 'Delta vs Cumulative: The Choice Is Bigger Than It Looks'
-description: Should metrics be emitted as Delta or Cumulative?
+title: 'OpenTelemetry Metrics: Delta vs Cumulative Temporality from a Backend Perspective'
+description: Should OpenTelemetry metrics be emitted as Delta or Cumulative?
 pubDate: 2026-07-28
 tags:
   - observability
@@ -9,13 +9,13 @@ tags:
 draft: false
 ---
 
-If you've worked with OpenTelemetry or Prometheus, you've probably come across this question:
+While building an observability backend, one simple question kept coming back:
 
-> **Should metrics be emitted as Delta or Cumulative?**
+**Should metrics be stored as Delta or Cumulative?**
 
-At first, it feels like a simple SDK configuration. While building an observability backend, I realized it's much more than that. The choice affects how to store the datapoints, aggregate, data accuracy and even how much logic your backend needs to maintain.
+At first, it felt like a simple SDK configuration. The deeper I went, the more I realized it influences almost every part of the pipeline- how data is stored, aggregated, recovered after failures, how resets are detected, and how much logic the backend needs to maintain.
 
-Neither temporality is universally better. They simply optimize for different things. Before comparing them, let's understand what a metric actually represents.
+There isn't a universally correct answer. Both temporalities solve different problems, and understanding those trade-offs is far more important than simply choosing one.
 
 ## Every Counter Starts the Same Way
 
@@ -147,4 +147,4 @@ If your backend is built around Prometheus, cumulative counters fit naturally. T
 
 If you're building a custom metrics backend focused on interval-based aggregation, delta can simplify many backend operations because the data already represents changes over each reporting window.
 
-The important takeaway isn't that one temporality is better than the other. It's that choosing between Delta and Cumulative is really choosing how your backend represents history and that decision influences much more than the SDK configuration where it all begins.
+It's that choosing between Delta and Cumulative is really choosing how you want your backend to represent history and that decision influences much more than the instrumentation where it all begins.
