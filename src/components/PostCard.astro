@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import { getReadingTimeFromText } from '../lib/reading-time.ts';
-import { generatePreview } from '../lib/preview.ts';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -11,10 +10,9 @@ interface Props {
 }
 
 const { post, compact = false, headingLevel = 'h2' } = Astro.props;
-const { title, pubDate, description, tags } = post.data;
+const { title, pubDate, tags } = post.data;
 const minutesRead = post.body ? getReadingTimeFromText(post.body) : '';
 const Heading = headingLevel;
-const preview = description || generatePreview(post.body || '', 150);
 ---
 
 <article class="post-entry" class:list={[{ compact }]}>
@@ -36,7 +34,6 @@ const preview = description || generatePreview(post.body || '', 150);
           )}
         </div>
         <Heading class="post-title">{title}</Heading>
-        <p class="post-desc">{preview}</p>
         {tags && tags.length > 0 && (
           <div class="post-tags">
             {tags.map((tag) => <span class="tag">#{tag}</span>)}
@@ -113,9 +110,7 @@ const preview = description || generatePreview(post.body || '', 150);
   font-weight: 500;
 }
 
-.post-desc {
-  font-size: var(--text-size-sm);
-  color: var(--text-soft);
+.post-entry:not(.compact) .post-title:last-child {
   margin-bottom: 0;
 }
 
