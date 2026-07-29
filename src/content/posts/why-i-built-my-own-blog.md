@@ -9,15 +9,11 @@ draft: false
 
 I deleted every blogging platform account I had created over the past few years.
 
-I joined college as a Computer Science student and started writing blogs in 2021. Hashnode was the first platform I used, and honestly, it looked very promising at the time. The custom domain support and [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) editor were excellent. But after writing a few articles, I started noticing that SEO wasn't great, and over time the platform became crowded with low-quality content. That wasn't necessarily Hashnode's fault, it was just the direction things evolved.
+I joined college as a Computer Science student and started writing blogs in 2021. Hashnode was the first platform I used, and honestly, it looked very promising at the time. The custom domain support and [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) editor were excellent. But after writing a few articles, I started noticing that SEO wasn't great, and over time the platform became crowded with low-quality content.
 
 Then I tried Medium. It has one of the cleanest reading experiences I've seen, but it also felt limited. Everything is essentially a list of articles. Even I find it difficult to find some of my older posts.
 
-I also explored Substack. I still think it's one of the best platforms for newsletters and long-form writing now. But recently, the product experience has started feeling more like another social network, with activity feeds, short notes, recommendations. That's not a bad direction, it just isn't the experience I'm personally looking for.
-
-This isn't about blaming any platform or listing their flaws. Every platform solves a different problem, and many people genuinely love them.
-
-My problem was something else.
+I also explored Substack. I still think it's one of the best platforms for newsletters and long-form writing now. But the product is like another social network, with activity feeds, short notes, recommendations. It isn't the experience I'm personally looking for.
 
 I realized I had very little control over the overall experience. Platforms change their product goals, features, UI, recommendation systems, and SEO over time. Once I publish an article on `xyz.substack.com` or any other hosted platform, that content effectively becomes part of their ecosystem. I have to adapt to the experience they provide, instead of creating the experience I want readers to have.
 
