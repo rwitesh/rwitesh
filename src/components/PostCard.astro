@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
-import { getReadingTimeFromText } from '../lib/reading-time.ts';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -11,34 +10,24 @@ interface Props {
 
 const { post, compact = false, headingLevel = 'h2' } = Astro.props;
 const { title, pubDate, tags } = post.data;
-const minutesRead = post.body ? getReadingTimeFromText(post.body) : '';
 const Heading = headingLevel;
+const showTags = !compact && tags && tags.length > 0;
 ---
 
 <article class="post-entry" class:list={[{ compact }]}>
   <a href={`/posts/${post.id}/`} class="post-link">
     {compact ? (
-      <div class="post-line">
+      <div class="post-row">
         <span class="post-date"><FormattedDate date={pubDate} /></span>
         <Heading class="post-title">{title}</Heading>
       </div>
     ) : (
       <>
-        <div class="post-meta">
-          <FormattedDate date={pubDate} />
-          {minutesRead && (
-            <>
-              <span class="dot">·</span>
-              <span class="read-time">{minutesRead}</span>
-            </>
-          )}
-        </div>
         <Heading class="post-title">{title}</Heading>
-        {tags && tags.length > 0 && (
-          <div class="post-tags">
-            {tags.map((tag) => <span class="tag">#{tag}</span>)}
-          </div>
-        )}
+        <div class="post-meta">
+          <span class="post-date"><FormattedDate date={pubDate} /></span>
+          {showTags && tags.map((tag) => <span class="tag">#{tag}</span>)}
+        </div>
       </>
     )}
   </a>
@@ -46,7 +35,6 @@ const Heading = headingLevel;
 
 <style>
 .post-entry {
-  padding: var(--space-sm) 0;
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -54,12 +42,9 @@ const Heading = headingLevel;
   border-bottom: none;
 }
 
-.post-entry.compact {
-  padding: 0.4rem 0;
-}
-
 .post-link {
   display: block;
+  padding: 0.45rem 0;
   color: inherit;
   border-bottom: none;
 }
@@ -68,36 +53,13 @@ const Heading = headingLevel;
   border-bottom: none;
 }
 
-.post-line {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-}
-
-.post-date {
-  font-size: var(--text-size-sm);
-  color: var(--text-faint);
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.post-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--text-size-sm);
-  color: var(--text-faint);
-  margin-bottom: var(--space-xs);
-}
-
-.dot {
-  opacity: 0.5;
-}
-
 .post-title {
-  font-size: var(--text-size-h3);
-  margin-bottom: var(--space-xs);
+  display: block;
+  font-size: var(--text-size);
+  font-weight: 500;
+  margin: 0;
   letter-spacing: -0.01em;
+  line-height: 1.4;
   transition: color 0.12s ease;
 }
 
@@ -105,34 +67,61 @@ const Heading = headingLevel;
   color: var(--link);
 }
 
-.post-entry.compact .post-title {
-  font-size: var(--text-size);
-  font-weight: 500;
-}
-
-.post-entry:not(.compact) .post-title:last-child {
-  margin-bottom: 0;
-}
-
-.post-tags {
+.post-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
+  align-items: baseline;
+  column-gap: 0.55rem;
+  row-gap: 0.1rem;
+  margin-top: 0.1rem;
+  line-height: 1.35;
+}
+
+.post-date {
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .tag {
   font-size: var(--text-size-sm);
-  color: var(--tag-text);
-  background: var(--tag-bg);
-  padding: 0.1em 0.4em;
-  border-radius: 2px;
-  cursor: pointer;
+  color: var(--text-faint);
+}
+
+/* Home recent list: date + title on one row */
+.post-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.post-entry.compact .post-link {
+  padding: 0.3rem 0;
+}
+
+.post-entry.compact .post-date {
+  flex-shrink: 0;
+  width: 6.75rem;
+}
+
+.post-entry.compact .post-title {
+  min-width: 0;
 }
 
 @media (max-width: 30rem) {
-  .post-line {
+  .post-link {
+    padding: 0.5rem 0;
+  }
+
+  .post-entry.compact .post-row {
     flex-direction: column;
     gap: 0.1rem;
+  }
+
+  .post-entry.compact .post-date {
+    width: auto;
   }
 }
 </style>
