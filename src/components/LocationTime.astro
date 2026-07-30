@@ -1,0 +1,150 @@
+---
+import { SITE } from '../config/site.ts';
+
+const { location, timezone } = SITE;
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: timezone,
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true,
+  timeZoneName: 'short',
+});
+
+const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: timezone,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
+const now = new Date();
+const currentTime = timeFormatter.format(now);
+const isoDateTime = dateFormatter.format(now).replace(', ', 'T');
+---
+
+<span class="location-time">
+  <span class="location">{location}</span>
+  <span class="separator" aria-hidden="true">·</span>
+  <time class="clock" datetime={isoDateTime} data-timezone={timezone}>
+    {currentTime}
+  </time>
+  <span class="separator tz-offset-separator" aria-hidden="true" hidden>·</span>
+  <span class="tz-offset" hidden aria-live="polite"></span>
+</span>
+
+<style>
+.location-time {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-size: var(--text-size-sm);
+  color: var(--text-faint);
+  line-height: 1.35;
+}
+
+.clock {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+</style>
+
+<script define:vars={{ timezone }}>
+  const roots = document.querySelectorAll('.location-time');
+
+  const getUtcOffsetMinutes = (timeZone, date = new Date()) => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).formatToParts(date);
+
+    const value = (type) => Number(parts.find((part) => part.type === type).value);
+    const utc = Date.UTC(
+      value('year'),
+      value('month') - 1,
+      value('day'),
+      value('hour'),
+      value('minute'),
+      value('second'),
+    );
+
+    return (utc - date.getTime()) / 60_000;
+  };
+
+  const formatDuration = (totalMinutes) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`;
+    if (hours > 0) return hours === 1 ? '1 hour' : `${hours} hours`;
+    return minutes === 1 ? '1 minute' : `${minutes} minutes`;
+  };
+
+  const formatOffsetLabel = (diffMinutes) => {
+    if (diffMinutes === 0) return 'same timezone';
+
+    const duration = formatDuration(Math.abs(diffMinutes));
+    return diffMinutes > 0
+      ? `you're ${duration} behind`
+      : `you're ${duration} ahead`;
+  };
+
+  const updateOffset = (root) => {
+    const offsetEl = root.querySelector('.tz-offset');
+    const separatorEl = root.querySelector('.tz-offset-separator');
+    if (!offsetEl) return;
+
+    const siteOffset = getUtcOffsetMinutes(timezone);
+    const visitorOffset = -new Date().getTimezoneOffset();
+    const diffMinutes = Math.round(siteOffset - visitorOffset);
+
+    offsetEl.textContent = formatOffsetLabel(diffMinutes);
+    offsetEl.hidden = false;
+    if (separatorEl) separatorEl.hidden = false;
+  };
+
+  roots.forEach((root) => {
+    const clock = root.querySelector('.clock');
+    if (!clock) return;
+
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZoneName: 'short',
+    });
+
+    const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
+    const tick = () => {
+      const now = new Date();
+      clock.textContent = formatter.format(now);
+      clock.setAttribute('datetime', dateFormatter.format(now).replace(', ', 'T'));
+      updateOffset(root);
+    };
+
+    tick();
+    window.setInterval(tick, 60_000);
+  });
+</script>

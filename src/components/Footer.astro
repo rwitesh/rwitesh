@@ -1,34 +1,60 @@
 ---
 import { SITE } from '../config/site.ts';
+import LocationTime from './LocationTime.astro';
 ---
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <span>{SITE.footer.text}</span>
-    <span class="separator">·</span>
-    <a href="/rss.xml">subscribe to rss feed</a>
+    <div class="footer-meta">
+      <LocationTime />
+      <span class="separator" aria-hidden="true">·</span>
+      <a href="/rss.xml">rss feed</a>
+    </div>
+    <p class="footer-copy">{SITE.footer.text}</p>
   </div>
 </footer>
 
 <style>
 .site-footer {
-  padding: var(--space-sm) 0;
-  margin-top: var(--space-xl);
+  width: 100%;
+  max-width: var(--max-width);
+  margin: var(--space-xl) auto 0;
+  padding: 0 var(--content-padding) var(--space-sm);
+  justify-self: center;
 }
 
 .footer-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--content-padding);
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.footer-meta {
+  display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem 0.55rem;
   font-size: var(--text-size-sm);
   color: var(--text-faint);
 }
 
-.separator {
+.footer-meta a {
+  color: var(--text-soft);
+  border-bottom: none;
+}
+
+.footer-meta a:hover {
+  color: var(--link);
+  border-bottom: none;
+}
+
+.footer-copy {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-size-sm);
   color: var(--text-faint);
 }
 </style>
