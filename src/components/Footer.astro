@@ -5,12 +5,12 @@ import LocationTime from './LocationTime.astro';
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-meta">
+    <a class="footer-rss" href="/rss.xml">subscribe to rss feed</a>
+    <p class="footer-bottom">
       <LocationTime />
       <span class="separator" aria-hidden="true">·</span>
-      <a href="/rss.xml">rss feed</a>
-    </div>
-    <p class="footer-copy">{SITE.footer.text}</p>
+      <span>{SITE.footer.text}</span>
+    </p>
   </div>
 </footer>
 
@@ -31,30 +31,30 @@ import LocationTime from './LocationTime.astro';
   text-align: center;
 }
 
-.footer-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem 0.55rem;
+.footer-rss {
   font-size: var(--text-size-sm);
-  color: var(--text-faint);
-}
-
-.footer-meta a {
   color: var(--text-soft);
+  white-space: nowrap;
   border-bottom: none;
 }
 
-.footer-meta a:hover {
+.footer-rss:hover {
   color: var(--link);
   border-bottom: none;
 }
 
-.footer-copy {
+.footer-bottom {
   margin: 0;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  white-space: nowrap;
   font-size: var(--text-size-sm);
+  color: var(--text-faint);
+}
+
+.separator {
   color: var(--text-faint);
 }
 </style>

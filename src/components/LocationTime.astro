@@ -38,11 +38,10 @@ const isoDateTime = dateFormatter.format(now).replace(', ', 'T');
 
 <style>
 .location-time {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
+  white-space: nowrap;
   margin: 0;
   font-size: var(--text-size-sm);
   color: var(--text-faint);
