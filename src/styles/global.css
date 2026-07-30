@@ -104,6 +104,31 @@ h2 { font-size: var(--text-size-h2); }
 h3 { font-size: var(--text-size-h3); }
 h4, h5, h6 { font-size: var(--text-size); }
 
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+  scroll-margin-top: 4rem;
+}
+
+.post-body .heading-anchor {
+  margin-left: 0.35em;
+  color: var(--text-faint);
+  border-bottom: none;
+  opacity: 0;
+}
+
+.post-body h2:hover .heading-anchor,
+.post-body h3:hover .heading-anchor,
+.post-body h4:hover .heading-anchor,
+.post-body .heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+.post-body .heading-anchor:hover {
+  color: var(--link);
+  border-bottom: none;
+}
+
 a {
   color: var(--link);
   text-decoration: none;

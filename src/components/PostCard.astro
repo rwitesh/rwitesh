@@ -15,22 +15,26 @@ const showTags = !compact && tags && tags.length > 0;
 ---
 
 <article class="post-entry" class:list={[{ compact }]}>
-  <a href={`/posts/${post.id}/`} class="post-link">
-    {compact ? (
+  {compact ? (
+    <a href={`/posts/${post.id}/`} class="post-link">
       <div class="post-row">
         <span class="post-date"><FormattedDate date={pubDate} /></span>
         <Heading class="post-title">{title}</Heading>
       </div>
-    ) : (
-      <>
+    </a>
+  ) : (
+    <>
+      <a href={`/posts/${post.id}/`} class="post-link">
         <Heading class="post-title">{title}</Heading>
-        <div class="post-meta">
-          <span class="post-date"><FormattedDate date={pubDate} /></span>
-          {showTags && tags.map((tag) => <span class="tag">#{tag}</span>)}
-        </div>
-      </>
-    )}
-  </a>
+      </a>
+      <div class="post-meta">
+        <span class="post-date"><FormattedDate date={pubDate} /></span>
+        {showTags && tags.map((tag) => (
+          <a href={`/posts/tag/${tag}/`} class="tag">#{tag}</a>
+        ))}
+      </div>
+    </>
+  )}
 </article>
 
 <style>
@@ -42,9 +46,12 @@ const showTags = !compact && tags && tags.length > 0;
   border-bottom: none;
 }
 
+.post-entry:not(.compact) {
+  padding: 0.45rem 0;
+}
+
 .post-link {
   display: block;
-  padding: 0.45rem 0;
   color: inherit;
   border-bottom: none;
 }
@@ -87,6 +94,13 @@ const showTags = !compact && tags && tags.length > 0;
 .tag {
   font-size: var(--text-size-sm);
   color: var(--text-faint);
+  border-bottom: none;
+  transition: color 0.12s ease;
+}
+
+.tag:hover {
+  color: var(--link);
+  border-bottom: none;
 }
 
 /* Home recent list: date + title on one row */
@@ -111,7 +125,7 @@ const showTags = !compact && tags && tags.length > 0;
 }
 
 @media (max-width: 30rem) {
-  .post-link {
+  .post-entry:not(.compact) {
     padding: 0.5rem 0;
   }
 

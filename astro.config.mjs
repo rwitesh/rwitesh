@@ -1,8 +1,10 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { unified } from '@astrojs/markdown-remark';
+import rehypeSlug from 'rehype-slug';
 import { remarkReadingTime } from './src/lib/reading-time.ts';
 import { rehypeExternalLinks } from './src/lib/external-links.ts';
+import { rehypeHeadingAnchors } from './src/lib/heading-anchors.ts';
 
 import partytown from '@astrojs/partytown';
 
@@ -37,7 +39,11 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkReadingTime],
-      rehypePlugins: [rehypeExternalLinks],
+      rehypePlugins: [
+        rehypeSlug,
+        rehypeHeadingAnchors,
+        rehypeExternalLinks,
+      ],
     }),
     shikiConfig: {
       themes: {

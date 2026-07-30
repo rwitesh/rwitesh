@@ -32,7 +32,9 @@ const { title, pubDate, tags, description } = post.data;
       </div>
       {tags && tags.length > 0 && (
         <div class="post-tags">
-          {tags.map((tag) => <span class="tag">#{tag}</span>)}
+          {tags.map((tag) => (
+            <a href={`/posts/tag/${tag}/`} class="tag">#{tag}</a>
+          ))}
         </div>
       )}
     </header>
@@ -140,7 +142,13 @@ const { title, pubDate, tags, description } = post.data;
   background: var(--tag-bg);
   padding: 0.1em 0.4em;
   border-radius: 2px;
-  cursor: pointer;
+  border-bottom: none;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.tag:hover {
+  color: var(--link);
+  border-bottom: none;
 }
 
 .post-body :global(h2) {
