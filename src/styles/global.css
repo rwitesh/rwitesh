@@ -106,11 +106,15 @@ h4, h5, h6 { font-size: var(--text-size); }
 
 .post-body h2,
 .post-body h3,
-.post-body h4 {
+.post-body h4,
+.prose h2,
+.prose h3,
+.prose h4 {
   scroll-margin-top: 4rem;
 }
 
-.post-body .heading-anchor {
+.post-body .heading-anchor,
+.prose .heading-anchor {
   margin-left: 0.35em;
   color: var(--text-faint);
   border-bottom: none;
@@ -120,11 +124,16 @@ h4, h5, h6 { font-size: var(--text-size); }
 .post-body h2:hover .heading-anchor,
 .post-body h3:hover .heading-anchor,
 .post-body h4:hover .heading-anchor,
-.post-body .heading-anchor:focus-visible {
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor,
+.post-body .heading-anchor:focus-visible,
+.prose .heading-anchor:focus-visible {
   opacity: 1;
 }
 
-.post-body .heading-anchor:hover {
+.post-body .heading-anchor:hover,
+.prose .heading-anchor:hover {
   color: var(--link);
   border-bottom: none;
 }
