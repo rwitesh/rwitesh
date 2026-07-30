@@ -9,11 +9,9 @@ draft: false
 
 I deleted every blogging platform account I had created over the past few years.
 
-I joined college as a Computer Science student and started writing blogs in 2021. Hashnode was the first platform I used, and honestly, it looked very promising at the time. The custom domain support and [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) editor were excellent. But after writing a few articles, I started noticing that SEO wasn't great, and over time the platform became crowded with low-quality content.
+I joined college and started writing blogs in 2021. Hashnode was the first platform I used, and honestly, it looked very promising. The custom domain support and [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) editor were excellent. But after writing a few articles, I started noticing that SEO wasn't great, and over time the platform became crowded with low-quality content.
 
-Then I tried Medium. It has one of the cleanest reading experiences I've seen, but it also felt limited. Everything is essentially a list of articles. Even I find it difficult to find some of my older posts.
-
-I also explored Substack. I still think it's one of the best platforms for newsletters and long-form writing now. But the product is like another social network, with activity feeds, short notes, recommendations. It isn't the experience I'm personally looking for.
+I also explored Substack. I still think it's one of the best platforms for newsletters and long-form writing now. But the product is becoming another social network, with activity feeds, short notes, recommendations. It isn't the experience I'm personally looking for.
 
 I realized I had very little control over the overall experience. Platforms change their product goals, features, UI, recommendation systems, and SEO over time. Once I publish an article on `xyz.substack.com` or any other hosted platform, that content effectively becomes part of their ecosystem. I have to adapt to the experience they provide, instead of creating the experience I want readers to have.
 
@@ -29,9 +27,7 @@ That's probably true.
 
 But that's also where you discover what actually matters to you.
 
-I don't necessarily need lot of views. If even few people read something I've written and genuinely find it useful or interesting that's enough for me.
-
-None of my articles are written for clickbait, algorithms, or marketing. I don't write just to publish another post or chase impressions. I write because I enjoy documenting things I've learned and sharing ideas that might help someone else.
+None of my articles are written for algorithms, or marketing. I don't write just to publish another post or chase impressions. I write because I enjoy documenting things I've learned and sharing ideas that might help someone else.
 
 So should you move your blogs from every platform and move entirely to your own website?
 
