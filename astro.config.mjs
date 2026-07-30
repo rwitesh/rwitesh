@@ -16,11 +16,24 @@ export default defineConfig({
       },
     }),
   ],
-  fonts: [{
-    provider: fontProviders.fontsource(),
-    name: "Lora",
-    cssVariable: "--font-lora",
-  }],
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      weights: [400, 500, 600, 700],
+      styles: ['normal'],
+      fallbacks: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Source Serif 4',
+      cssVariable: '--font-serif',
+      weights: ['400 700'],
+      styles: ['normal'],
+      fallbacks: ['Georgia', 'serif'],
+    },
+  ],
   markdown: {
     processor: unified({
       remarkPlugins: [remarkReadingTime],

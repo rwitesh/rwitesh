@@ -23,7 +23,8 @@ const props = Astro.props;
   <head>
     <GoogleAnalytics />
     <SEO {...props} />
-    <Font cssVariable="--font-lora" />
+    <Font cssVariable="--font-mono" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-serif" />
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
