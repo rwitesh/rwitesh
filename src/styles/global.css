@@ -212,6 +212,35 @@ pre code {
   border: none;
 }
 
+/* Shiki dual-theme syntax highlighting — themes set in astro.config.mjs */
+pre.astro-code {
+  background: var(--shiki-light-bg);
+}
+
+:root[data-theme="dark"] pre.astro-code {
+  background: var(--shiki-dark-bg);
+}
+
+:root[data-theme="light"] .astro-code,
+:root[data-theme="light"] .astro-code span,
+:root:not([data-theme]) .astro-code,
+:root:not([data-theme]) .astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
 blockquote {
   border-left: 3px solid var(--border);
   padding-left: var(--space-sm);
