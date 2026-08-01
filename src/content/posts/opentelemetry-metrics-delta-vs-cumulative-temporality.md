@@ -1,7 +1,7 @@
 ---
 title: 'OpenTelemetry Metrics: Delta vs Cumulative Temporality'
 description: Should OpenTelemetry metrics be emitted as Delta or Cumulative?
-pubDate: 2026-07-28
+date: 2026-07-28
 tags:
   - observability
   - prometheus

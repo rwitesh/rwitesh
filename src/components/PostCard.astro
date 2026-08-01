@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { post, compact = false, headingLevel = 'h2' } = Astro.props;
-const { title, pubDate, tags } = post.data;
+const { title, date, tags } = post.data;
 const Heading = headingLevel;
 const showTags = !compact && tags && tags.length > 0;
 ---
@@ -18,7 +18,7 @@ const showTags = !compact && tags && tags.length > 0;
   {compact ? (
     <a href={`/posts/${post.id}/`} class="post-link">
       <div class="post-row">
-        <span class="post-date"><FormattedDate date={pubDate} /></span>
+        <span class="post-date"><FormattedDate date={date} /></span>
         <Heading class="post-title">{title}</Heading>
       </div>
     </a>
@@ -28,7 +28,7 @@ const showTags = !compact && tags && tags.length > 0;
         <Heading class="post-title">{title}</Heading>
       </a>
       <div class="post-meta">
-        <span class="post-date"><FormattedDate date={pubDate} /></span>
+        <span class="post-date"><FormattedDate date={date} /></span>
         {showTags && tags.map((tag) => (
           <a href={`/posts/tag/${tag}/`} class="tag">#{tag}</a>
         ))}

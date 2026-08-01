@@ -10,14 +10,14 @@ interface Props {
 }
 
 const { post, minutesRead } = Astro.props;
-const { title, pubDate, tags, description } = post.data;
+const { title, date, tags, description } = post.data;
 ---
 
 <BaseLayout
   title={title}
   description={description}
   type="article"
-  publishedTime={pubDate.toISOString()}
+  publishedTime={date.toISOString()}
   tags={tags}
 >
   <div class="progress-bar" id="reading-progress" aria-hidden="true"></div>
@@ -26,7 +26,7 @@ const { title, pubDate, tags, description } = post.data;
     <header class="post-header">
       <h1 class="post-h1">{title}</h1>
       <div class="post-meta">
-        <FormattedDate date={pubDate} />
+        <FormattedDate date={date} />
         <span class="dot">·</span>
         <span>{minutesRead}</span>
       </div>

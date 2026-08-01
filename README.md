@@ -1,28 +1,19 @@
-# Rwitesh Bera — Portfolio & Posts
+# Rwitesh Bera
 
-Static personal site and posts built with **Astro 7** (static output) and TypeScript.
+Static portfolio and blog. Astro 7, TypeScript, Cloudflare Workers.
 
-## Getting Started
-
-### 1. Install Dependencies
 ```bash
 npm install
+npm run dev    # http://localhost:4321
 ```
 
-### 2. Start the Server
-```bash
-npm run dev
-```
-The development server will run locally at [http://localhost:4321](http://localhost:4321).
+Content is Markdown in `src/content/`. Edit locally or via [Sveltia CMS](http://localhost:4321/_edit/index.html) (GitHub PAT).
 
 ## Scripts
 
-- `npm run dev` — Start the local development server.
-- `npm run build` — Build static files for production to `dist/`.
-- `npm run typecheck` — Type-check `.astro` and TypeScript files.
-- `npm run deploy` — Build and manually deploy to Cloudflare Workers.
+- `npm run dev` — local dev server
+- `npm run build` — production build to `dist/`
+- `npm run typecheck` — Astro + TypeScript check
+- `npm run deploy` — build and deploy to Cloudflare
 
----
-
-## Technical Context
-For a complete overview of the project configuration, CMS setup, content collections schema, and directory layout, see [AGENTS.md](./AGENTS.md).
+See [AGENTS.md](./AGENTS.md) for schema, CMS, and deployment details.

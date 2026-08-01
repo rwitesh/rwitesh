@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /_edit/
 
 Sitemap: https://rwitesh.com/sitemap-index.xml

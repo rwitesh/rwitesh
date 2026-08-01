@@ -1,7 +1,7 @@
 ---
 title: Why I Built My Own Blog
 description: Building a place where the content comes first, not the platform.
-pubDate: 2026-07-30
+date: 2026-07-30
 tags:
   - blogging
 draft: false

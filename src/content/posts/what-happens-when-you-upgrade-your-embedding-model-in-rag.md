@@ -1,7 +1,7 @@
 ---
 title: "What Happens When You Upgrade Your Embedding Model in RAG?"
 description: "Embeddings are meaningful only in the context of the model that produced them. Here's what breaks and how to migrate safely."
-pubDate: 2026-06-28
+date: 2026-06-28
 tags: ["rag", "embeddings", "ai"]
 draft: false
 ---

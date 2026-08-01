@@ -11,7 +11,9 @@ import partytown from '@astrojs/partytown';
 export default defineConfig({
   site: 'https://rwitesh.com',
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !new URL(page).pathname.startsWith('/_edit'),
+    }),
     partytown({
       config: {
         forward: ['dataLayer.push'],
