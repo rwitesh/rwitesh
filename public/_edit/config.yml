@@ -25,7 +25,6 @@ collections:
 
   - name: "pages"
     label: "Pages"
-    delete: false
     files:
       - name: "home"
         label: "Home Page"

@@ -6,18 +6,11 @@ import { remarkReadingTime } from './src/lib/reading-time.ts';
 import { rehypeExternalLinks } from './src/lib/external-links.ts';
 import { rehypeHeadingAnchors } from './src/lib/heading-anchors.ts';
 
-import partytown from '@astrojs/partytown';
-
 export default defineConfig({
   site: 'https://rwitesh.com',
   integrations: [
     sitemap({
       filter: (page) => !new URL(page).pathname.startsWith('/_edit'),
-    }),
-    partytown({
-      config: {
-        forward: ['dataLayer.push'],
-      },
     }),
   ],
   fonts: [

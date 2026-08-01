@@ -8,12 +8,10 @@ const enabled = Boolean(gaId) && import.meta.env.PROD;
 {enabled && (
   <>
     <script
-      is:inline
-      type="text/partytown"
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
     ></script>
-    <script is:inline type="text/partytown" set:html={`
+    <script is:inline set:html={`
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
