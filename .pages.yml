@@ -1,0 +1,53 @@
+# Pages CMS config — https://pagescms.org
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: posts
+    label: Posts
+    path: src/content/posts
+    type: collection
+    filename:
+      template: "{primary}.md"
+      field: create # show the slug field only when creating a new post
+    view:
+      primary: title
+      sort: pubDate
+      order: desc
+    fields:
+      - name: title
+        type: string
+      - name: description
+        type: text
+        description: "Optional summary for SEO and RSS feeds. Hidden from post listings."
+      - name: pubDate
+        label: Published Date
+        type: date
+        options:
+          time: false
+          format: yyyy-MM-dd
+      - name: tags
+        type: string
+        list: true
+      - name: draft
+        type: boolean
+      - name: body
+        type: rich-text
+        options:
+          format: markdown
+
+  - name: pages
+    label: Pages
+    type: file
+    path: src/content/pages/home.md
+    fields:
+      - name: title
+        type: string
+      - name: description
+        type: text
+        description: "Optional summary used for SEO meta tags."
+      - name: body
+        type: rich-text
+        options:
+          format: markdown

@@ -7,7 +7,7 @@ This document contains full technical context, configuration options, directory 
 - **Language:** TypeScript
 - **Styling:** Pure CSS (no Tailwind, resets and variables in `src/styles/global.css`)
 - **Hosting:** Cloudflare Workers (static assets)
-- **CMS:** Sveltia CMS (CDNs in `src/pages/admin.astro`, config in `public/admin/config.yml`)
+- **CMS:** Pages CMS (hosted GitHub app; config in `.pages.yml`, edited at https://app.pagescms.org)
 
 ---
 
@@ -49,6 +49,7 @@ All content is managed through Astro Content Collections, defined in `src/conten
 | `src/config/site.ts` | Site meta: title, description, author, canonical URL, social handles, nav links |
 | `astro.config.mjs` | Astro configuration (e.g. `site` URL, Markdown syntax highlighting with Shiki) |
 | `wrangler.jsonc` | Cloudflare Workers configuration (specifies `./dist` static assets, 404 routing) |
+| `.pages.yml` | Pages CMS configuration — collections, fields, media storage |
 | `public/robots.txt` | Search engine indexing & sitemap link |
 
 > [!IMPORTANT]
@@ -56,12 +57,14 @@ All content is managed through Astro Content Collections, defined in `src/conten
 
 ---
 
-## CMS (Sveltia CMS)
+## CMS (Pages CMS)
 
-We use **Sveltia CMS** for Git-based browser editing via the native **File System Access API**.
-- **Local Access:** Run the development server and visit `http://localhost:4321/admin/`.
-- **Local Dev Editing:** Choose **"Work with Local Repository"**, select the root directory of this repository, and grand file permission. It writes changes directly to `src/content/`.
-- **Zero Overhead:** Loaded via a CDN in `src/pages/admin.astro`. It has zero dependencies in `package.json`.
+We use **Pages CMS** for Git-based browser editing. It is a hosted GitHub app — no code runs in this repo.
+- **Editor:** Visit https://app.pagescms.org and sign in with GitHub.
+- **Config:** `.pages.yml` at the repo root defines the collections (`posts`, `pages`) and fields, mirroring the Zod schema in `src/content.config.ts`.
+- **Storage:** All edits are committed straight to this repository as Markdown (Git is the source of truth), then redeployed by Cloudflare Workers Builds.
+- **Media:** Images upload to `public/images` and are referenced in Markdown as `/images/<file>`.
+- **No server/route needed:** There is no `/admin` route or CDN script — the entire admin UI is hosted by Pages CMS.
 
 ---
 
@@ -83,13 +86,13 @@ src/
   content/pages/home.md   # home/about section content
   components/             # SEO, Header, Footer, PostCard, ...
   layouts/                # BaseLayout, PostLayout
-  lib/                    # reading-time remark plugin
-  pages/                  # index, post/index, post/[slug], rss.xml.ts, 404, admin.astro
+  lib/                    # remark plugins (reading-time)
+  pages/                  # index, post/index, post/[slug], rss.xml.ts, 404
   styles/global.css       # resets, CSS variables, typography
 content.config.ts         # content collection schemas
 astro.config.mjs          # Astro settings (site URL, markdown config)
 wrangler.jsonc            # Cloudflare Worker config
-public/                   # robots.txt, favicon.svg, admin/ (Sveltia CMS config)
+public/                   # robots.txt, favicon.svg, images/
 ```
 
 ---
