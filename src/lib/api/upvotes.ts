@@ -14,16 +14,16 @@ export async function handleUpvote(request: Request, db: D1Database, salt: strin
     try {
       const ipHash = await getClientIpHash(request, salt);
 
-      const [statsResult, voteResult] = await db.batch([
+      const [statsBatch, voteBatch] = await db.batch([
         db.prepare('SELECT upvotes FROM post_stats WHERE slug = ?').bind(slug),
         db.prepare("SELECT 1 FROM activity_logs WHERE slug = ? AND action = 'upvote' AND ip_hash = ?").bind(slug, ipHash)
       ]);
 
-      const statsRow = statsResult.results[0] as { upvotes: number } | undefined;
-      const hasVoted = voteResult.results.length > 0;
+      const stats = statsBatch.results[0] as { upvotes: number } | undefined;
+      const hasVoted = voteBatch.results.length > 0;
 
       return Response.json({
-        count: statsRow?.upvotes ?? 0,
+        count: stats?.upvotes ?? 0,
         hasVoted
       });
     } catch (err) {
@@ -59,25 +59,25 @@ export async function handleUpvote(request: Request, db: D1Database, salt: strin
       }
 
       // Fetch current total upvotes
-      const statsRow = await db.prepare(
+      const stats = await db.prepare(
         'SELECT upvotes FROM post_stats WHERE slug = ?'
       ).bind(slug).first<{ upvotes: number }>();
 
-      const totalCount = statsRow?.upvotes ?? (wasInserted ? 1 : 0);
+      const count = stats?.upvotes ?? (wasInserted ? 1 : 0);
 
       if (!wasInserted) {
         return Response.json({
           success: false,
           message: 'Already upvoted',
           hasVoted: true,
-          count: totalCount
+          count
         }, { status: 409 });
       }
 
       return Response.json({
         success: true,
         hasVoted: true,
-        count: totalCount
+        count
       });
     } catch (err) {
       console.error('Error processing upvote:', err);

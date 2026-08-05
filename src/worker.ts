@@ -30,7 +30,7 @@ export default {
 
       // Endpoint: /api/views
       if (url.pathname === '/api/views') {
-        return handleViews(request, env.DB);
+        return handleViews(request, env.DB, env.HASH_SALT);
       }
 
       return Response.json({ error: 'Route not found' }, { status: 404 });

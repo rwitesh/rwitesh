@@ -1,7 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
-import { isValidSlug } from './utils';
+import { getClientIpHash, isValidSlug } from './utils';
 
-export async function handleViews(request: Request, db: D1Database): Promise<Response> {
+export async function handleViews(request: Request, db: D1Database, salt: string): Promise<Response> {
   const url = new URL(request.url);
 
   // GET /api/views?slug=...
@@ -12,12 +12,12 @@ export async function handleViews(request: Request, db: D1Database): Promise<Res
     }
 
     try {
-      const statsRow = await db.prepare(
+      const stats = await db.prepare(
         'SELECT views FROM post_stats WHERE slug = ?'
       ).bind(slug).first<{ views: number }>();
 
       return Response.json({
-        count: statsRow?.views ?? 0
+        count: stats?.views ?? 0
       });
     } catch (err) {
       console.error('Error fetching view count:', err);
@@ -25,7 +25,7 @@ export async function handleViews(request: Request, db: D1Database): Promise<Res
     }
   }
 
-  // POST /api/views (Increments post view count in post_stats)
+  // POST /api/views (Increments post view count with 24-hour IP deduplication)
   if (request.method === 'POST') {
     try {
       const body = (await request.json()) as { slug?: string };
@@ -35,16 +35,35 @@ export async function handleViews(request: Request, db: D1Database): Promise<Res
         return Response.json({ error: 'Invalid slug' }, { status: 400 });
       }
 
-      await db.prepare(
-        'INSERT INTO post_stats (slug, views) VALUES (?, 1) ON CONFLICT(slug) DO UPDATE SET views = views + 1'
-      ).bind(slug).run();
+      const ipHash = await getClientIpHash(request, salt);
 
-      const statsRow = await db.prepare(
+      // Check if this IP recorded a view for this post in the last 24 hours
+      const recentView = await db.prepare(
+        "SELECT 1 FROM activity_logs WHERE slug = ? AND action = 'view' AND ip_hash = ? AND created_at > datetime('now', '-24 hours')"
+      ).bind(slug, ipHash).first();
+
+      if (!recentView) {
+        // Record view log & increment view count in 1 batched call using RETURNING
+        const [, updateBatch] = await db.batch([
+          db.prepare(
+            "INSERT INTO activity_logs (slug, action, ip_hash, created_at) VALUES (?, 'view', ?, CURRENT_TIMESTAMP) ON CONFLICT(slug, action, ip_hash) DO UPDATE SET created_at = CURRENT_TIMESTAMP"
+          ).bind(slug, ipHash),
+          db.prepare(
+            'INSERT INTO post_stats (slug, views) VALUES (?, 1) ON CONFLICT(slug) DO UPDATE SET views = views + 1 RETURNING views'
+          ).bind(slug)
+        ]);
+
+        const stats = updateBatch.results[0] as { views: number } | undefined;
+        return Response.json({ count: stats?.views ?? 1 });
+      }
+
+      // If already viewed in the last 24h, return current count without DB write
+      const stats = await db.prepare(
         'SELECT views FROM post_stats WHERE slug = ?'
       ).bind(slug).first<{ views: number }>();
 
       return Response.json({
-        count: statsRow?.views ?? 1
+        count: stats?.views ?? 0
       });
     } catch (err) {
       console.error('Error recording view:', err);
