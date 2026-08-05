@@ -4,6 +4,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import type { CollectionEntry } from 'astro:content';
 import Share from '../components/Share.astro';
 import Upvote from '../components/Upvote.astro';
+import Views from '../components/Views.astro';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -30,6 +31,8 @@ const { title, date, tags, description } = post.data;
         <FormattedDate date={date} />
         <span class="dot">·</span>
         <span>{minutesRead}</span>
+        <span class="dot">·</span>
+        <Views slug={post.id} />
       </div>
       {tags && tags.length > 0 && (
         <div class="post-tags">

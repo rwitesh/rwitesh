@@ -14,17 +14,16 @@ export async function handleUpvote(request: Request, db: D1Database, salt: strin
     try {
       const ipHash = await getClientIpHash(request, salt);
 
-      // Single batched DB call for count + user vote status
-      const [countResult, voteResult] = await db.batch([
-        db.prepare("SELECT COUNT(*) as count FROM activity_logs WHERE slug = ? AND action = 'upvote'").bind(slug),
+      const [statsResult, voteResult] = await db.batch([
+        db.prepare('SELECT upvotes FROM post_stats WHERE slug = ?').bind(slug),
         db.prepare("SELECT 1 FROM activity_logs WHERE slug = ? AND action = 'upvote' AND ip_hash = ?").bind(slug, ipHash)
       ]);
 
-      const countRow = countResult.results[0] as { count: number } | undefined;
+      const statsRow = statsResult.results[0] as { upvotes: number } | undefined;
       const hasVoted = voteResult.results.length > 0;
 
       return Response.json({
-        count: countRow?.count ?? 0,
+        count: statsRow?.upvotes ?? 0,
         hasVoted
       });
     } catch (err) {
@@ -45,15 +44,26 @@ export async function handleUpvote(request: Request, db: D1Database, salt: strin
 
       const ipHash = await getClientIpHash(request, salt);
 
-      // Single batched DB call for insert + updated total count
-      const [insertResult, countResult] = await db.batch([
-        db.prepare("INSERT INTO activity_logs (slug, action, ip_hash) VALUES (?, 'upvote', ?) ON CONFLICT DO NOTHING").bind(slug, ipHash),
-        db.prepare("SELECT COUNT(*) as count FROM activity_logs WHERE slug = ? AND action = 'upvote'").bind(slug)
-      ]);
+      // Record upvote log
+      const logInsert = await db.prepare(
+        "INSERT INTO activity_logs (slug, action, ip_hash) VALUES (?, 'upvote', ?) ON CONFLICT DO NOTHING"
+      ).bind(slug, ipHash).run();
 
-      const wasInserted = insertResult.meta.changes > 0;
-      const countRow = countResult.results[0] as { count: number } | undefined;
-      const totalCount = countRow?.count ?? 0;
+      const wasInserted = logInsert.meta.changes > 0;
+
+      if (wasInserted) {
+        // Increment upvotes count in post_stats
+        await db.prepare(
+          'INSERT INTO post_stats (slug, upvotes) VALUES (?, 1) ON CONFLICT(slug) DO UPDATE SET upvotes = upvotes + 1'
+        ).bind(slug).run();
+      }
+
+      // Fetch current total upvotes
+      const statsRow = await db.prepare(
+        'SELECT upvotes FROM post_stats WHERE slug = ?'
+      ).bind(slug).first<{ upvotes: number }>();
+
+      const totalCount = statsRow?.upvotes ?? (wasInserted ? 1 : 0);
 
       if (!wasInserted) {
         return Response.json({

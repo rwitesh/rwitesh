@@ -1,5 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 import { handleUpvote } from './lib/api/upvotes';
+import { handleViews } from './lib/api/views';
 
 export interface Env {
   DB?: D1Database;
@@ -25,6 +26,11 @@ export default {
       // Endpoint: /api/upvote
       if (url.pathname === '/api/upvote') {
         return handleUpvote(request, env.DB, env.HASH_SALT);
+      }
+
+      // Endpoint: /api/views
+      if (url.pathname === '/api/views') {
+        return handleViews(request, env.DB);
       }
 
       return Response.json({ error: 'Route not found' }, { status: 404 });
