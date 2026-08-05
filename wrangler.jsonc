@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
+  "main": "src/worker.ts",
   "compatibility_date": "2026-07-01",
   "workers_dev": true,
   "preview_urls": false,
@@ -10,12 +11,12 @@
   },
   "observability": {
     "enabled": true
-  }
-  // To serve the site at rwitesh.com, add a custom-domain route below.
-  // Requires the `rwitesh.com` zone to be active on this Cloudflare account,
-  // then set "workers_dev": false so rwitesh.com is the sole origin.
-  // "routes": [
-  //   { "pattern": "rwitesh.com", "custom_domain": true },
-  //   { "pattern": "www.rwitesh.com", "custom_domain": true }
-  // ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio-db",
+      "database_id": "debf1a13-22c9-4bba-8282-495985e09520"
+    }
+  ]
 }
