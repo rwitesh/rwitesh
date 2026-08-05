@@ -17,10 +17,10 @@ const { slug } = Astro.props;
 </div>
 
 <script>
-  function setupUpvotes() {
+  function setupUpvoteClick() {
     const containers = document.querySelectorAll<HTMLElement>('.upvote-container');
 
-    containers.forEach(async (container) => {
+    containers.forEach((container) => {
       const slug = container.dataset.slug;
       if (!slug) return;
 
@@ -30,33 +30,7 @@ const { slug } = Astro.props;
       if (!btn || !countEl || !textEl) return;
 
       const storageKey = `voted:${slug}`;
-      let localVoted = localStorage.getItem(storageKey) === 'true';
 
-      if (localVoted) {
-        btn.classList.add('voted');
-        textEl.textContent = 'Upvoted';
-      }
-
-      // 1. Fetch count & server vote status
-      try {
-        const res = await fetch(`/api/upvote?slug=${encodeURIComponent(slug)}`);
-        if (res.ok) {
-          const data = (await res.json()) as { count?: number; hasVoted?: boolean };
-          countEl.textContent = String(data.count ?? 0);
-          if (data.hasVoted) {
-            localStorage.setItem(storageKey, 'true');
-            btn.classList.add('voted');
-            textEl.textContent = 'Upvoted';
-          }
-        } else {
-          countEl.textContent = '0';
-        }
-      } catch (err) {
-        console.warn('Failed to load upvote count', err);
-        countEl.textContent = '0';
-      }
-
-      // 2. Handle Upvote click
       btn.addEventListener('click', async () => {
         if (btn.classList.contains('voted') || btn.disabled) return;
 
@@ -79,9 +53,8 @@ const { slug } = Astro.props;
 
           if (res.ok && data.success) {
             localStorage.setItem(storageKey, 'true');
-            countEl.textContent = String(data.count);
+            countEl.textContent = String(data.count ?? currentCount + 1);
           } else if (res.status === 409 || data.hasVoted) {
-            // Already voted on server
             localStorage.setItem(storageKey, 'true');
             countEl.textContent = String(data.count ?? currentCount);
           } else {
@@ -102,8 +75,7 @@ const { slug } = Astro.props;
     });
   }
 
-  // Run on initial page load
-  setupUpvotes();
+  setupUpvoteClick();
 </script>
 
 <style>

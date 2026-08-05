@@ -24,7 +24,7 @@ const { title, date, tags, description } = post.data;
 >
   <div class="progress-bar" id="reading-progress" aria-hidden="true"></div>
 
-  <article class="post">
+  <article class="post" data-post-slug={post.id}>
     <header class="post-header">
       <h1 class="post-h1">{title}</h1>
       <div class="post-meta">
@@ -54,6 +54,37 @@ const { title, date, tags, description } = post.data;
   <Share postTitle={title} />
 
   <script>
+    // Single top-level data fetcher (1 GET request on page load, propagates data down)
+    const postEl = document.querySelector<HTMLElement>('[data-post-slug]');
+    if (postEl) {
+      const slug = postEl.dataset.postSlug;
+      if (slug) {
+        fetch(`/api/stats?slug=${encodeURIComponent(slug)}`)
+          .then((res) => (res.ok ? (res.json() as Promise<{ views?: number; upvotes?: number; hasVoted?: boolean }>) : null))
+          .then((data) => {
+            if (!data) return;
+
+            // Propagate views count to Views component
+            const viewsEl = document.querySelector<HTMLElement>('.views-count');
+            if (viewsEl) viewsEl.textContent = String(data.views ?? 0);
+
+            // Propagate upvotes count & voted state to Upvote component
+            const upvoteCountEl = document.querySelector<HTMLElement>('.upvote-count');
+            if (upvoteCountEl) upvoteCountEl.textContent = String(data.upvotes ?? 0);
+
+            if (data.hasVoted) {
+              const storageKey = `voted:${slug}`;
+              localStorage.setItem(storageKey, 'true');
+              const upvoteBtn = document.querySelector<HTMLButtonElement>('.upvote-btn');
+              const upvoteText = document.querySelector<HTMLElement>('.upvote-text');
+              if (upvoteBtn) upvoteBtn.classList.add('voted');
+              if (upvoteText) upvoteText.textContent = 'Upvoted';
+            }
+          })
+          .catch((err) => console.warn('Failed to load post stats', err));
+      }
+    }
+
     // Copy code button
     document.querySelectorAll('pre').forEach((pre) => {
       if (pre.querySelector('.copy-btn')) return;

@@ -14,40 +14,6 @@ const { slug } = Astro.props;
   <span class="views-count">...</span> views
 </span>
 
-<script>
-  function setupViews() {
-    const containers = document.querySelectorAll<HTMLElement>('.views-container');
-
-    containers.forEach(async (container) => {
-      const slug = container.dataset.slug;
-      if (!slug) return;
-
-      const countEl = container.querySelector<HTMLElement>('.views-count');
-      if (!countEl) return;
-
-      try {
-        const res = await fetch('/api/views', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug })
-        });
-
-        if (res.ok) {
-          const data = (await res.json()) as { count?: number };
-          countEl.textContent = String(data.count ?? 0);
-        } else {
-          countEl.textContent = '0';
-        }
-      } catch (err) {
-        console.warn('Failed to load views count', err);
-        countEl.textContent = '0';
-      }
-    });
-  }
-
-  setupViews();
-</script>
-
 <style>
 .views-container {
   display: inline-flex;
