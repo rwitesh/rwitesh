@@ -4,7 +4,6 @@ import FormattedDate from '../components/FormattedDate.astro';
 import type { CollectionEntry } from 'astro:content';
 import Share from '../components/Share.astro';
 import Upvote from '../components/Upvote.astro';
-import Views from '../components/Views.astro';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -31,8 +30,6 @@ const { title, date, tags, description } = post.data;
         <FormattedDate date={date} />
         <span class="dot">·</span>
         <span>{minutesRead}</span>
-        <span class="dot">·</span>
-        <Views slug={post.id} />
       </div>
       {tags && tags.length > 0 && (
         <div class="post-tags">
@@ -59,16 +56,11 @@ const { title, date, tags, description } = post.data;
     if (postEl) {
       const slug = postEl.dataset.postSlug;
       if (slug) {
-        fetch(`/api/stats?slug=${encodeURIComponent(slug)}`)
-          .then((res) => (res.ok ? (res.json() as Promise<{ views?: number; upvotes?: number; hasVoted?: boolean }>) : null))
+        fetch(`/api/upvote?slug=${encodeURIComponent(slug)}`)
+          .then((res) => (res.ok ? (res.json() as Promise<{ upvotes?: number; hasVoted?: boolean }>) : null))
           .then((data) => {
             if (!data) return;
 
-            // Propagate views count to Views component
-            const viewsEl = document.querySelector<HTMLElement>('.views-count');
-            if (viewsEl) viewsEl.textContent = String(data.views ?? 0);
-
-            // Propagate upvotes count & voted state to Upvote component
             const upvoteCountEl = document.querySelector<HTMLElement>('.upvote-count');
             if (upvoteCountEl) upvoteCountEl.textContent = String(data.upvotes ?? 0);
 
@@ -81,7 +73,7 @@ const { title, date, tags, description } = post.data;
               if (upvoteText) upvoteText.textContent = 'Upvoted';
             }
           })
-          .catch((err) => console.warn('Failed to load post stats', err));
+          .catch((err) => console.warn('Failed to load upvotes', err));
       }
     }
 

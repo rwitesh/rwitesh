@@ -1,6 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
-import { handleStats } from './lib/api/stats';
-import { handleUpvote } from './lib/api/upvotes';
+import { handleUpvote } from './lib/api';
 
 export interface Env {
   DB?: D1Database;
@@ -23,12 +22,7 @@ export default {
         );
       }
 
-      // GET /api/stats?slug=... (Fetches stats & records pageview)
-      if (url.pathname === '/api/stats') {
-        return handleStats(request, env.DB, env.HASH_SALT);
-      }
-
-      // POST /api/upvote (UPVOTE ONLY)
+      // GET /api/upvote — all posts; GET /api/upvote?slug=... — one post; POST — upvote
       if (url.pathname === '/api/upvote') {
         return handleUpvote(request, env.DB, env.HASH_SALT);
       }
