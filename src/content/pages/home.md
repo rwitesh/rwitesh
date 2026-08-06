@@ -7,15 +7,11 @@ Hi, I'm Rwitesh.
 
 Welcome to my little corner of the internet.
 
-I'm a software engineer based in India. I enjoy building software, understanding how systems work, and exploring ideas that make me curious. While much of my work is around backend engineering, databases, observability, and developer tools, I don't like limiting myself to a single area. If something catches my interest, chances are I'll end up experimenting with it.
+I'm a software engineer based in India. I spend most of my time designing systems, building backend services, working with databases, observability, and AI. Beyond that, I just enjoy figuring out how things work.
 
-This website is less of a portfolio and more of a place I enjoy maintaining. It's where I document what I'm building, what I'm learning, and things I find worth remembering. You'll find technical articles, project updates, experiments, notes, and the occasional thought that doesn't fit into a short post.
-
-I write mostly for myself to organize ideas and keep a record of the journey. If something here helps you solve a problem, sparks an idea, or simply makes for an interesting read, that's even better.
+I write about whatever I'm learning or exploring at the time. Sometimes it's deeply technical, other times it's just something that caught my curiosity.
 
 ## Projects
-
-Some of the things I'm currently building:
 
 - [**NovaCode**](https://www.npmjs.com/package/novacode) — Open-source AI coding agent for developers.
 - [**DataCia**](https://www.datacia.app/) — AI-assisted database GUI.
