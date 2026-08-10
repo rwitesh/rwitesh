@@ -13,7 +13,7 @@ I joined college and started writing blogs in 2021. Hashnode was the first platf
 
 I also explored Substack. I still think it's one of the best platforms for newsletters and long-form writing now. But the product is becoming another social network, with activity feeds, short notes, recommendations. It isn't the experience I'm personally looking for.
 
-I realized I had very little control over the overall experience. Platforms change their product goals, features, UI, recommendation systems, and SEO over time. Once I publish an article on `xyz.substack.com` or any other hosted platform, that content effectively becomes part of their ecosystem. I have to adapt to the experience they provide, instead of creating the experience I want readers to have.
+I realized I had very little control over the overall experience. Platforms change their product goals, features, UI, recommendation systems, and SEO over time. Once I publish an article on any hosted platform, that content effectively becomes part of their ecosystem. I have to adapt to the experience they provide, instead of creating the experience I want readers to have.
 
 That's ultimately why I ended up building my own static blogging website.
 
@@ -35,13 +35,13 @@ Maybe.
 
 Or maybe not.
 
-The biggest advantage of owning your own website is that you have complete control over the experience. You decide the typography, spacing, colors, navigation, organization, and how your writing should feel.
+The biggest advantage of owning our own website is that we have complete control over the experience. We decide the typography, spacing, colors, navigation, organization, and how our writing should feel.
 
-That said, there's one trap you should avoid.
+That said, there's one trap we should avoid.
 
-Don't fall into the endless loop of building the "perfect" portfolio or endlessly tweaking your blog. It's surprisingly easy to spend months improving the website while writing nothing meaningful.
+Don't fall into the endless loop of building the "perfect" portfolio or endlessly tweaking blog. It's surprisingly easy to spend months improving the website while writing nothing meaningful.
 
-The website should support your writing, not replace it.
+The website should support our writing, not replace it.
 
 When I write inside someone else's platform, I lose control over many details that matter to me. Font size matters. Line spacing matters. These small decisions can make reading feel calm instead of tiring.
 
@@ -49,4 +49,4 @@ There are many articles on the internet that I simply can't finish, not because 
 
 And no, I’m not saying a great reading experience needs fancy visuals, complex animations, or flashy transitions always.
 
-A good UI is one where your brain focuses on the content instead of constantly noticing the application itself.
+A good UI is one where our brain focuses on the content instead of constantly noticing the application itself.
