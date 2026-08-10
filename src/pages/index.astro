@@ -16,7 +16,9 @@ const HomeContent = home ? (await render(home)).Content : null;
 <BaseLayout>
   <section class="hero">
     <div class="hero-head">
-      <img src="/images/profile.jpg" alt="Rwitesh Bera" width="72" height="72" class="profile-photo" loading="eager" />
+      <button class="profile-photo-btn" id="open-profile-modal" aria-label="View profile picture in high resolution">
+        <img src="/images/profile.jpg" alt="Rwitesh Bera" width="96" height="96" class="profile-photo" loading="eager" />
+      </button>
       <h1 class="hero-title">Rwitesh Bera</h1>
     </div>
     {HomeContent && (
@@ -41,6 +43,62 @@ const HomeContent = home ? (await render(home)).Content : null;
       <a href="/posts" class="view-all">view all posts &rarr;</a>
     )}
   </section>
+
+  {/* High-Resolution Profile Photo Lightbox Modal */}
+  <div id="profile-modal" class="profile-modal" role="dialog" aria-modal="true" aria-label="Profile photo view" hidden>
+    <div class="profile-modal-backdrop" id="profile-modal-backdrop"></div>
+    <div class="profile-modal-content">
+      <button class="profile-modal-close" id="profile-modal-close" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <img id="profile-modal-img" src="" data-src="/images/profile-full.png" alt="Rwitesh Bera - High Resolution" class="profile-modal-img" />
+    </div>
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('open-profile-modal');
+    const modal = document.getElementById('profile-modal');
+    const backdrop = document.getElementById('profile-modal-backdrop');
+    const closeBtn = document.getElementById('profile-modal-close');
+    const modalImg = document.getElementById('profile-modal-img') as HTMLImageElement | null;
+
+    function openProfileModal() {
+      if (!modal || !modalImg) return;
+
+      const fullSrc = modalImg.dataset.src;
+      if (fullSrc && modalImg.src !== fullSrc) {
+        modalImg.src = fullSrc;
+      }
+
+      modal.hidden = false;
+      requestAnimationFrame(() => {
+        modal.classList.add('visible');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileModal() {
+      if (!modal) return;
+      modal.classList.remove('visible');
+      window.setTimeout(() => {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }, 250);
+    }
+
+    openBtn?.addEventListener('click', openProfileModal);
+    closeBtn?.addEventListener('click', closeProfileModal);
+    backdrop?.addEventListener('click', closeProfileModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.hidden) {
+        closeProfileModal();
+      }
+    });
+  </script>
 </BaseLayout>
 
 <style>
@@ -56,9 +114,29 @@ const HomeContent = home ? (await render(home)).Content : null;
   margin-bottom: var(--space-sm);
 }
 
+.profile-photo-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.profile-photo-btn:hover {
+  transform: scale(1.06);
+}
+
+.profile-photo-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .profile-photo {
-  width: 72px;
-  height: 72px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--profile-border);
@@ -127,10 +205,90 @@ const HomeContent = home ? (await render(home)).Content : null;
   color: var(--link);
 }
 
+/* Lightbox Modal */
+.profile-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.profile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.profile-modal-content {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-modal.visible .profile-modal-content {
+  transform: scale(1);
+}
+
+.profile-modal-img {
+  max-width: min(85vw, 560px);
+  max-height: min(85vh, 560px);
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.profile-modal-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.profile-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
 @media (max-width: 30rem) {
   .profile-photo {
-    width: 60px;
-    height: 60px;
+    width: 76px;
+    height: 76px;
+  }
+  .profile-modal-img {
+    max-width: min(90vw, 360px);
+    max-height: min(75vh, 360px);
   }
 }
 </style>
