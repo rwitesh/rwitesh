@@ -16,9 +16,7 @@ const HomeContent = home ? (await render(home)).Content : null;
 <BaseLayout>
   <section class="hero">
     <div class="hero-head">
-      <button class="profile-photo-btn" id="open-profile-modal" aria-label="View profile picture in high resolution">
-        <img src="/images/profile.jpg" alt="Rwitesh Bera" width="96" height="96" class="profile-photo" loading="eager" />
-      </button>
+      <img src="/images/profile.jpg" alt="Rwitesh Bera" width="72" height="72" class="profile-photo" loading="eager" />
       <h1 class="hero-title">Rwitesh Bera</h1>
     </div>
     {HomeContent && (
@@ -43,89 +41,6 @@ const HomeContent = home ? (await render(home)).Content : null;
       <a href="/posts" class="view-all">view all posts &rarr;</a>
     )}
   </section>
-
-  {/* High-Resolution Profile Photo Lightbox Modal */}
-  <div id="profile-modal" class="profile-modal" role="dialog" aria-modal="true" aria-label="Profile photo view" hidden>
-    <div class="profile-modal-backdrop" id="profile-modal-backdrop"></div>
-    <div class="profile-modal-content">
-      <div class="profile-modal-header">
-        <button class="profile-modal-close" id="profile-modal-close" aria-label="Close modal">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-          <span>Close</span>
-        </button>
-      </div>
-      <div class="profile-modal-body">
-        <div id="profile-modal-spinner" class="profile-modal-spinner" aria-label="Loading high resolution photo">
-          <svg class="spinner-svg" viewBox="0 0 50 50">
-            <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
-          </svg>
-        </div>
-        <img id="profile-modal-img" src="" data-src="/images/profile-full.png" alt="Rwitesh Bera - High Resolution" class="profile-modal-img" />
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const openBtn = document.getElementById('open-profile-modal');
-    const modal = document.getElementById('profile-modal');
-    const backdrop = document.getElementById('profile-modal-backdrop');
-    const closeBtn = document.getElementById('profile-modal-close');
-    const modalImg = document.getElementById('profile-modal-img') as HTMLImageElement | null;
-    const modalSpinner = document.getElementById('profile-modal-spinner');
-
-    function openProfileModal() {
-      if (!modal || !modalImg) return;
-
-      const fullSrc = modalImg.dataset.src;
-
-      if (fullSrc && modalImg.getAttribute('src') !== fullSrc) {
-        modalSpinner?.classList.remove('hidden');
-        modalImg.classList.remove('loaded');
-
-        modalImg.onload = () => {
-          modalSpinner?.classList.add('hidden');
-          modalImg.classList.add('loaded');
-        };
-        modalImg.onerror = () => {
-          modalSpinner?.classList.add('hidden');
-          modalImg.classList.add('loaded');
-        };
-
-        modalImg.src = fullSrc;
-      } else {
-        modalSpinner?.classList.add('hidden');
-        modalImg.classList.add('loaded');
-      }
-
-      modal.hidden = false;
-      requestAnimationFrame(() => {
-        modal.classList.add('visible');
-      });
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeProfileModal() {
-      if (!modal) return;
-      modal.classList.remove('visible');
-      window.setTimeout(() => {
-        modal.hidden = true;
-        document.body.style.overflow = '';
-      }, 250);
-    }
-
-    openBtn?.addEventListener('click', openProfileModal);
-    closeBtn?.addEventListener('click', closeProfileModal);
-    backdrop?.addEventListener('click', closeProfileModal);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal && !modal.hidden) {
-        closeProfileModal();
-      }
-    });
-  </script>
 </BaseLayout>
 
 <style>
@@ -141,41 +56,13 @@ const HomeContent = home ? (await render(home)).Content : null;
   margin-bottom: var(--space-sm);
 }
 
-.profile-photo-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  display: inline-flex;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.profile-photo-btn:hover {
-  transform: scale(1.06);
-}
-
-.profile-photo-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
 .profile-photo {
-  width: 96px;
-  height: 96px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--profile-border);
   flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 .hero-title {
@@ -240,145 +127,10 @@ const HomeContent = home ? (await render(home)).Content : null;
   color: var(--link);
 }
 
-/* Lightbox Modal */
-.profile-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-md);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.profile-modal.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.profile-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.profile-modal-content {
-  position: relative;
-  z-index: 1;
-  max-width: 90vw;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  transform: scale(0.92);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.profile-modal.visible .profile-modal-content {
-  transform: scale(1);
-}
-
-.profile-modal-header {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-
-.profile-modal-close {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  border-radius: 9999px;
-  padding: 6px 14px;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.profile-modal-close:hover {
-  background: rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
-}
-
-.profile-modal-body {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-  min-height: 180px;
-}
-
-.profile-modal-spinner {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease;
-}
-
-.profile-modal-spinner.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.spinner-svg {
-  width: 36px;
-  height: 36px;
-  animation: spin 0.9s linear infinite;
-}
-
-.spinner-path {
-  stroke: rgba(255, 255, 255, 0.85);
-  stroke-dasharray: 90, 150;
-  stroke-dashoffset: 0;
-  stroke-linecap: round;
-}
-
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-.profile-modal-img {
-  max-width: min(85vw, 560px);
-  max-height: min(85vh, 560px);
-  width: auto;
-  height: auto;
-  border-radius: 16px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
-  object-fit: contain;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.profile-modal-img.loaded {
-  opacity: 1;
-}
-
 @media (max-width: 30rem) {
   .profile-photo {
-    width: 76px;
-    height: 76px;
-  }
-  .profile-modal-img {
-    max-width: min(90vw, 360px);
-    max-height: min(75vh, 360px);
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
