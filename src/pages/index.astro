@@ -48,13 +48,23 @@ const HomeContent = home ? (await render(home)).Content : null;
   <div id="profile-modal" class="profile-modal" role="dialog" aria-modal="true" aria-label="Profile photo view" hidden>
     <div class="profile-modal-backdrop" id="profile-modal-backdrop"></div>
     <div class="profile-modal-content">
-      <button class="profile-modal-close" id="profile-modal-close" aria-label="Close modal">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <img id="profile-modal-img" src="" data-src="/images/profile-full.png" alt="Rwitesh Bera - High Resolution" class="profile-modal-img" />
+      <div class="profile-modal-header">
+        <button class="profile-modal-close" id="profile-modal-close" aria-label="Close modal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <span>Close</span>
+        </button>
+      </div>
+      <div class="profile-modal-body">
+        <div id="profile-modal-spinner" class="profile-modal-spinner" aria-label="Loading high resolution photo">
+          <svg class="spinner-svg" viewBox="0 0 50 50">
+            <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+          </svg>
+        </div>
+        <img id="profile-modal-img" src="" data-src="/images/profile-full.png" alt="Rwitesh Bera - High Resolution" class="profile-modal-img" />
+      </div>
     </div>
   </div>
 
@@ -64,13 +74,30 @@ const HomeContent = home ? (await render(home)).Content : null;
     const backdrop = document.getElementById('profile-modal-backdrop');
     const closeBtn = document.getElementById('profile-modal-close');
     const modalImg = document.getElementById('profile-modal-img') as HTMLImageElement | null;
+    const modalSpinner = document.getElementById('profile-modal-spinner');
 
     function openProfileModal() {
       if (!modal || !modalImg) return;
 
       const fullSrc = modalImg.dataset.src;
-      if (fullSrc && modalImg.src !== fullSrc) {
+
+      if (fullSrc && modalImg.getAttribute('src') !== fullSrc) {
+        modalSpinner?.classList.remove('hidden');
+        modalImg.classList.remove('loaded');
+
+        modalImg.onload = () => {
+          modalSpinner?.classList.add('hidden');
+          modalImg.classList.add('loaded');
+        };
+        modalImg.onerror = () => {
+          modalSpinner?.classList.add('hidden');
+          modalImg.classList.add('loaded');
+        };
+
         modalImg.src = fullSrc;
+      } else {
+        modalSpinner?.classList.add('hidden');
+        modalImg.classList.add('loaded');
       }
 
       modal.hidden = false;
@@ -123,6 +150,10 @@ const HomeContent = home ? (await render(home)).Content : null;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .profile-photo-btn:hover {
@@ -141,6 +172,10 @@ const HomeContent = home ? (await render(home)).Content : null;
   object-fit: cover;
   border: 2px solid var(--profile-border);
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .hero-title {
@@ -239,13 +274,84 @@ const HomeContent = home ? (await render(home)).Content : null;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   transform: scale(0.92);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .profile-modal.visible .profile-modal-content {
   transform: scale(1);
+}
+
+.profile-modal-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.profile-modal-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.profile-modal-close:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.profile-modal-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  min-height: 180px;
+}
+
+.profile-modal-spinner {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.profile-modal-spinner.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner-svg {
+  width: 36px;
+  height: 36px;
+  animation: spin 0.9s linear infinite;
+}
+
+.spinner-path {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-dasharray: 90, 150;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
 .profile-modal-img {
@@ -257,28 +363,12 @@ const HomeContent = home ? (await render(home)).Content : null;
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
   object-fit: contain;
   border: 1px solid rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.profile-modal-close {
-  position: absolute;
-  top: -44px;
-  right: 0;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.profile-modal-close:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.08);
+.profile-modal-img.loaded {
+  opacity: 1;
 }
 
 @media (max-width: 30rem) {
