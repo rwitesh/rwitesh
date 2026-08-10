@@ -3,13 +3,13 @@ title: Home
 description: Home page of Rwitesh Bera
 ---
 
-Hi, I'm Rwitesh.
+Hi, I’m Rwitesh.
 
 Welcome to my little corner of the internet.
 
-I'm a software engineer based in India. I spend most of my time designing systems, building backend services, working with databases, observability, and AI. Beyond that, I just enjoy figuring out how things work.
+I’m a software engineer based in India. Most of my time goes into building software, working with backend systems, databases, observability, and AI.
 
-I write about whatever I'm learning or exploring at the time. Sometimes it's deeply technical, other times it's just something that caught my curiosity.
+I like reading books, articles, and other things I find interesting. I also write about things I’ve learned, things I’ve experienced, and whatever I feel like sharing here.
 
 ## Projects
 
@@ -18,4 +18,4 @@ I write about whatever I'm learning or exploring at the time. Sometimes it's dee
 
 ## Contact
 
-The best way to follow what I'm working on is through [**X**](https://x.com/rwiteshbera), and if you'd like to get in touch, feel free to send me an email at [**rwiteshbera@gmail.com**](mailto:rwiteshbera@gmail.com).
+The best way to follow is through [**X**](https://x.com/rwiteshbera), and if you'd like to get in touch, feel free to send me an email at [**rwiteshbera@gmail.com**](mailto:rwiteshbera@gmail.com).
