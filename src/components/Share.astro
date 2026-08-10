@@ -343,7 +343,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     flex-direction: column;
     justify-content: space-between;
     padding: 40px;
-    border-radius: 22px;
+    border-radius: 0;
     overflow: hidden;
     color: #ffffff;
     user-select: none;
@@ -915,7 +915,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
         img.style.maxWidth = '100%';
         img.style.maxHeight = '100vh';
         img.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
-        img.style.borderRadius = '12px';
 
         newTab.document.body.appendChild(img);
         newTab.document.title = 'Share Preview';

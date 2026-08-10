@@ -36,7 +36,7 @@
   --tag-text: #555555;
   --blockquote-text: #606060;
   --table-header-bg: #f0f0f0;
-  --selection-bg: #00567e3a;
+  --selection-bg: #b4d5fe;
   --profile-border: #c8c8c8;
   --progress-bg: #2563eb;
 }
@@ -56,7 +56,7 @@
   --tag-text: #9a9a9a;
   --blockquote-text: #8a8a8a;
   --table-header-bg: #1f1f1f;
-  --selection-bg: #6cb6ff4c;
+  --selection-bg: #264f78;
   --profile-border: #3a3a3a;
   --progress-bg: #6cb6ff;
 }
@@ -91,6 +91,13 @@ body {
 
 ::selection {
   background: var(--selection-bg);
+  color: var(--text);
+  text-decoration: none;
+}
+
+a::selection {
+  color: var(--text);
+  border-bottom-color: transparent;
 }
 
 h1, h2, h3, h4, h5, h6 {
