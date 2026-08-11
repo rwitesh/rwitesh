@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "portfolio",
+  "name": "rwiteshbera",
   "main": "src/worker.ts",
   "compatibility_date": "2026-07-01",
   "workers_dev": true,
@@ -10,13 +10,23 @@
     "not_found_handling": "404-page"
   },
   "observability": {
-    "enabled": true
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": true,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
   },
-  "d1_databases": [
+  "routes": [
     {
-      "binding": "DB",
-      "database_name": "portfolio-db",
-      "database_id": "debf1a13-22c9-4bba-8282-495985e09520"
+      "pattern": "rwitesh.com",
+      "zone_name": "rwitesh.com",
+      "custom_domain": true
     }
   ]
 }
