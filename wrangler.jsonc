@@ -7,7 +7,6 @@
   "preview_urls": false,
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS",
     "not_found_handling": "404-page"
   },
   "observability": {
