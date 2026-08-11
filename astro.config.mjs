@@ -24,11 +24,11 @@ export default defineConfig({
     },
     {
       provider: fontProviders.fontsource(),
-      name: 'Source Serif 4',
-      cssVariable: '--font-serif',
-      weights: ['400 700'],
-      styles: ['normal'],
-      fallbacks: ['Georgia', 'serif'],
+      name: 'Source Sans Pro',
+      cssVariable: '--font-sans',
+      weights: ['400 800'],
+      styles: ['normal', 'italic'],
+      fallbacks: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
     },
   ],
   markdown: {

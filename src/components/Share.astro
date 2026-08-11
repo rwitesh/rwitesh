@@ -46,7 +46,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
             {/* Scale and center the preview wrapper */}
             <div id="share-scaler" class="share-scaler">
               {/* Fixed resolution container for clean capture */}
-              <div id="share-card" class="share-card" data-bg="carbon" data-ratio="1-1" data-font="monospace">
+              <div id="share-card" class="share-card" data-bg="carbon" data-ratio="1-1" data-font="sans">
                 <div class="card-text-wrap">
                   <p id="share-card-text" class="card-text"></p>
                 </div>
@@ -89,9 +89,8 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
           <div class="control-section">
             <label class="control-label">Font</label>
             <div class="option-row">
-              <button class="toggle-option font-family-btn" data-font="monospace">Mono</button>
-              <button class="toggle-option font-family-btn" data-font="sans">Sans</button>
-              <button class="toggle-option font-family-btn" data-font="serif">Serif</button>
+              <button class="toggle-option font-family-btn active" data-font="sans">Sans</button>
+              <button class="toggle-option font-family-btn" data-font="mono">Mono</button>
             </div>
           </div>
 
@@ -380,17 +379,13 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     font-size: 32px;
   }
 
-  .share-card[data-font="monospace"] .card-text {
+  .share-card[data-font="mono"] .card-text {
     font-family: var(--font-mono);
     font-weight: 400;
   }
   .share-card[data-font="sans"] .card-text {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 500;
-  }
-  .share-card[data-font="serif"] .card-text {
-    font-family: var(--font-serif), Georgia, serif;
-    font-weight: 500;
+    font-family: var(--font-sans);
+    font-weight: 400;
   }
 
   .card-footer {
@@ -583,8 +578,6 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
 <script>
   import * as htmlToImage from 'html-to-image';
   type ToImageOptions = NonNullable<Parameters<typeof htmlToImage.toPng>[1]>;
-
-  // Design dimensions per aspect ratio matching CSS
   const RATIO_DIMS: Record<string, { w: number; h: number }> = {
     '1-1':  { w: 720, h: 720 },
     '16-9': { w: 720, h: 405 },
@@ -798,7 +791,7 @@ const hostname = new URL(SITE.url).hostname.replace(/^www\./, '');
     if (!el.modal || !el.card || !el.cardText) return;
 
     el.cardText.textContent = state.selectedText;
-    selectFont('monospace');
+    selectFont('sans');
     selectRatio('1-1');
 
     if (!state.avatarBase64) state.avatarBase64 = await fetchAvatarAsBase64();
