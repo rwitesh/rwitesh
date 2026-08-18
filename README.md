@@ -1,19 +1,9 @@
-# Rwitesh Bera
+Hi, I'm Rwitesh 👋
 
-Static portfolio and blog. Astro 7, TypeScript, Cloudflare Workers.
+Software engineer based in India.
 
-```bash
-npm install
-npm run dev    # http://localhost:4321
-```
+I love working with backend engineering, databases, and software architecture.
 
-Content is Markdown in `src/content/`. Edit locally or via [Sveltia CMS](http://localhost:4321/_edit/index.html) (GitHub PAT).
+I write about software, technology, and things I find interesting.
 
-## Scripts
-
-- `npm run dev` — local dev server
-- `npm run build` — production build to `dist/`
-- `npm run typecheck` — Astro + TypeScript check
-- `npm run deploy` — build and deploy to Cloudflare
-
-See [AGENTS.md](./AGENTS.md) for schema, CMS, and deployment details.
+Read my posts: [rwitesh.com/posts](https://rwitesh.com/posts)
