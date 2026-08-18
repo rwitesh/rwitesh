@@ -2,7 +2,7 @@
 
 backend:
   name: github
-  repo: rwitesh/portfolio
+  repo: rwitesh/rwitesh
   branch: main
   auth_methods: [token]
 
@@ -17,10 +17,35 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string", required: false, hint: "Optional summary for search and RSS. Not shown on the posts listing page." }
-      - { label: "Published Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
-      - { label: "Tags", name: "tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" }, required: false }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          required: false,
+          hint: "Optional summary for search and RSS. Not shown on the posts listing page.",
+        }
+      - {
+          label: "Published Date",
+          name: "date",
+          widget: "datetime",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          format: "YYYY-MM-DD",
+        }
+      - {
+          label: "Tags",
+          name: "tags",
+          widget: "list",
+          field: { label: "Tag", name: "tag", widget: "string" },
+          required: false,
+        }
+      - {
+          label: "Draft",
+          name: "draft",
+          widget: "boolean",
+          default: false,
+          required: false,
+        }
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "pages"
@@ -31,5 +56,10 @@ collections:
         file: "src/content/pages/home.md"
         fields:
           - { label: "Title", name: "title", widget: "string" }
-          - { label: "Description", name: "description", widget: "string", required: false }
+          - {
+              label: "Description",
+              name: "description",
+              widget: "string",
+              required: false,
+            }
           - { label: "Body", name: "body", widget: "markdown" }
