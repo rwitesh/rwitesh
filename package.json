@@ -12,17 +12,17 @@
     "update:cms": "node scripts/update-cms.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/markdown-remark": "^7.2.2",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.0.6",
+    "astro": "^7.2.2",
     "html-to-image": "^1.11.13",
     "mdast-util-to-string": "^4.0.0",
     "reading-time": "^1.5.0",
     "rehype-slug": "^6.0.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "typescript": "^6.0.3",
     "wrangler": "^4.107.0"
   }

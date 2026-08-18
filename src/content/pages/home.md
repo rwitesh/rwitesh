@@ -18,5 +18,6 @@ I write about things I find interesting and sometimes just dump my thoughts here
 
 ## Contact
 
-I’m usually on [**X**](https://x.com/rwiteshbera).
-Or email me at [rwiteshbera@gmail.com](mailto:rwiteshbera@gmail.com).
+I’m mostly active on [**X**](https://x.com/rwiteshbera).
+
+You can also reach me at [rwiteshbera@gmail.com](mailto:rwiteshbera@gmail.com).
