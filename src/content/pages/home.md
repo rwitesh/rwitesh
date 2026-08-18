@@ -7,9 +7,9 @@ Hi, I’m Rwitesh.
 
 Welcome to my little corner of the internet.
 
-I’m a software engineer based in India. Most of my time goes into building software, working with backend systems, databases, observability, and AI.
+I’m a software engineer from India. Most of my work is around backend systems, databases, observability, and AI.
 
-I like reading books, articles, and other things I find interesting. I also write about things I’ve learned, things I’ve experienced, and whatever I feel like sharing here.
+I write about things I find interesting and sometimes just dump my thoughts here.
 
 ## Projects
 
@@ -18,4 +18,5 @@ I like reading books, articles, and other things I find interesting. I also writ
 
 ## Contact
 
-The best way to follow is through [**X**](https://x.com/rwiteshbera), and if you'd like to get in touch, feel free to send me an email at [**rwiteshbera@gmail.com**](mailto:rwiteshbera@gmail.com).
+I’m usually on [**X**](https://x.com/rwiteshbera).
+Or email me at [rwiteshbera@gmail.com](mailto:rwiteshbera@gmail.com).
