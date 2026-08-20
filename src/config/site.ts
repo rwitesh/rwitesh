@@ -11,7 +11,6 @@ export const SITE = {
   social: {
     github: 'https://github.com/rwitesh',
     x: 'https://x.com/rwiteshbera',
-    linkedin: 'https://www.linkedin.com/in/rwiteshbera',
   },
   nav: [
     { label: 'Home', href: '/' },
