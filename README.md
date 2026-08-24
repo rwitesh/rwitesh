@@ -4,4 +4,4 @@ Software engineer based in India. Most of my work is around backend systems, dat
 
 I write about software, technology, and things I find interesting.
 
-webpage: [rwitesh.com/posts](https://rwitesh.com)
+webpage: [rwitesh.com](https://rwitesh.com)
